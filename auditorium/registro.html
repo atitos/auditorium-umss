@@ -48,27 +48,49 @@
 
 			<!--formulario-->
 								<div align="center" >
-								<form class="form" id="formulario" action="enviado.php" method="post">
+								<form class="form" id="formulario" action="registro.php" method="post">
 									<fieldset>
 								    <legend>Formulario de registro de usuario</legend>
+								    <div  class="form-group">
+								    <label>Carnet de identidad</label>
+								    	<input type="text" name="ci" id="ci" placeholder="carnet de identidad" required="" >
+								    </div>
 								    <div class="form-group">
 						            <label>Nombre</label>
 						                <input id="nombre" name="nombre" type="text" placeholder="nombre completo" required="" />
 						            </div>    
 						            <div class="form-group">
-						            <label>Apellido</label>
-						                <input id="apellido" name="apellido" type="text" placeholder="apellido completo" required="">
+						            <label>Primer apellido</label>
+						                <input id="apellidoPaterno" name="apellidoPaterno" type="text" placeholder="primer apellido" required="">
 						            </div>
 						            <div class="form-group">
-						            <label>Cargo que ocupa</label>
-						            	<input type="text" name="cargo" id="cargo" placeholder="cargo que ocupa dentro la institucion" required="">
+						            <label>Segundo apellido</label>
+						                <input id="apellidoMaterno" name="apellidoMaterno" type="text" placeholder="segundo apellido">
+						            </div>
+						            <div class="form-group">
+						            	<label>password</label>
+						            	<input type="password" name="password" id="password" placeholder="password" required="">
 						            </div>
 						            <div class="form-group">	
 						            <label>Email</label>
 						                <input id="campo2" name="email" type="text" placeholder="ejemplo: nickname@gmail.com" required="" />
 						                <br>
-						            </div>    
+						            </div>  
+						            <label>cargo que ocupa</label> 
+						            <div class="form-group">
+										<div class="select-wrapper">
+											<select name="demo-category" id="demo-category">
+												<option value="">- Cargo en la universidad -</option>
+												<option value="1">Administrador</option>
+												<option value="1">Docente</option>
+												<option value="1">Secretaria</option>
+											</select>
+										</div>
+									</div>
+									<br/>
 						            <input id="campo3" name="enviar" type="submit" value="Enviar" /></fieldset>
+									
+
 								</form>
 
 
