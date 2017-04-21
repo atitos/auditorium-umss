@@ -1,22 +1,19 @@
 <?php 
+function conexion()
+{
+   // datos de la bse de datos
+   $servidor = "localhost";
+   $usuario = "root";
+   $contraseña = "";
+   $nombreBD = "auditorio";
 
-    // Datos de la base de datos
-    $usuario = "root";
-	$password = "";
-	$servidor = "localhost";
-	$basededatos = "auditorio";
-	
-	// creación de la conexión a la base de datos con mysql_connect()
-	$conexion = mysqli_connect( $servidor, $usuario, "" ) or die ("No se ha podido conectar al servidor de Base de datos");
-	
-	// Selección del a base de datos a utilizar
-	$db = mysqli_select_db( $conexion, $basededatos ) or die ( " No se ha podido conectar a la base de datos" );
+   //conexion a la base de datos y al servidor con mysqli_conect()
+   $conexion = mysqli_connect($servidor, $usuario, $contraseña, $nombreBD ) or die(" Error de conexion al servidor");
 
-	
-	// cerrar conexión de base de datos
-	mysqli_close( $conexion );
-    
+   return $conexion;
+   
 
+  }
 
     	
  ?>
