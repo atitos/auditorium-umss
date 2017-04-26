@@ -1,0 +1,25 @@
+.fc-button {
+	line-height: 0em
+}
+form {
+    background: rgba(46, 56, 66, 1.0);
+    padding: 2%;
+    border-radius: 10px;
+}
+.mfp-content {
+    text-align: -webkit-center;
+    margin-top: 5%;
+}
+.fc-bg table, .fc-head-container table {
+	margin-bottom: 0px;
+}
+.fc-day-grid-container {
+	height: auto;
+}
+#agenda-container {
+    padding: 1%;
+    border-width: thin;
+    border-color: white;
+    border-style: solid;
+    border-radius: 5px;
+}

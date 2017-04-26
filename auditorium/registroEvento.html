@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Reserva</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <link rel="stylesheet" href="assets/css/fullcalendar.css" />
+        <link rel="stylesheet" href="assets/css/magnific-popup.css" />
+        <link rel="stylesheet" href="assets/css/custom.css" />
+        <!-- Scripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.scrollex.min.js"></script>
+        <script src="assets/js/jquery.scrolly.min.js"></script>
+        <script src="assets/js/skel.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <script src="assets/js/main.js"></script>
+        <script src="assets/js/moment.min.js"></script>
+        <script src="assets/js/fullcalendar.js"></script>
+        <script src="assets/js/magnific-popup.js"></script>
+        <script>
+        $(document).ready(function() {
+
+            $("#calendar").fullCalendar({
+                dayClick: function(pickedDate, jsEvent, view){
+                	$.magnificPopup.open({
+                		items:{src:'#formulario'},
+                		type: "inline",
+                		modal: true
+                	});
+                	$('#agenda').fullCalendar('changeView', 'agendaDay', pickedDate);
+                }
+            });
+			$("#agenda").fullCalendar({
+				dayClick: function(date, jsEvent, view){
+					var horaInicio = $("input[type=text]#horaInicio").val();
+					if (horaInicio === "")
+					{
+						$("input[type=text]#horaInicio").val(date.format("hh:mm"));
+					}
+					else {
+						$("input[type=text]#horaFin").val(date.format("hh:mm"));
+					}
+				}
+			});
+            $(".popup-form").magnificPopup({
+				type: 'inline',
+				preloader: false
+			});
+			$(".popup-form").submit(function(jsEvent){
+				jsEvent.preventDefault();
+			});
+        });
+        </script>
+    </head>
+    <body class="landing">
+        <!-- Page Wrapper -->
+            <div id="page-wrapper">
+                <!-- Header -->
+                <header id="header">
+                    <h1><a href="index.html">Auditorium - Reserva</a></h1>
+                    <nav id="nav">
+                        <ul>
+                            <li class="special">
+                                <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                                <div id="menu">
+                                    <ul>
+                                        <li><a href="index.html">Inicio</a></li>
+                                        <li><a href="informacion.html">Informacion</a></li>
+                                        <!--<li><a href="elements.html">Elementos</a></li>
+                                        <li><a href="#">Ingresar</a></li>-->
+                                        <li><a href="registroEvento.html">Reserva</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                </header>
+                <!-- Main -->
+                <article id="main">
+                    <section id="banner">
+                        <div class="inner">
+                            <h2>RESERVA</h2>
+                            <p>En esta seccion usted puede realizar la reserva del ambiente en la fecha y hora deseada</p>
+                        </div>
+                    </section>
+                    <section class="wrapper style2">
+                        <div class="inner">
+
+                            <section>
+                                <div class="row uniform 50%">
+                                    <div id="info-ambiente" class="3u 12u$(medium)">
+                                		<h4>Nombre Ambiente</h4>
+                                    	<span class="image fit">
+                                    		<img src="images/pic01.jpg" alt="">
+                                    	</span>
+                                        <h5>Descripcion</h5>
+                                        <p>Aca estara la descripcion del ambiente</p>
+                                    </div>
+                                    <div id="calendar" class="9u$ 12u$(medium)">
+                                    </div>
+                                </div>
+                            </section>
+
+                        </div>
+                    </section>        
+                </article>
+                <!--Calendar-->
+
+                <!-- Footer -->
+                <footer id="footer">
+                    <ul class="icons">
+                        <!--<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                        <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+                        <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+                        -->
+                        <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                        <li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+                    </ul>
+                    <ul class="copyright">
+                        <li>&copy; Auditorium</li><li>creado por: tis 1/2017 <!-- <a href="http://html5up.net">HTML5 UP</a>--></li>
+                    </ul>
+                </footer>
+
+            </div>
+            <form id="formulario" class="white-popup-block mfp-hide 6u 12u$(medium)" >
+                <fieldset>
+                <legend>FORMULARIO DE RESERVA DE HORARIO</legend>
+                <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+                <div>
+                <label>Usuario</label>
+                    <input type="text" name="usuario" id="usuario" placeholder="Insertar Usuario" required="" >
+                </div>
+                <div>
+                <label>Titulo</label>
+                    <input id="titulo" name="titulo" type="text" placeholder="Insertar Titulo" required="" />
+                </div>    
+                <div>
+                <label>Descripcion</label>
+                    <input id="descripcion" name="descripcion" type="text" placeholder="Insertar Descripcion" required="">
+                </div>
+
+                <br/>
+
+                <div id="agenda-container">
+                	<div id="agenda" class="12u"></div>
+                	<div class="row">
+                		<div class="6u">
+		                    <input id="horaInicio" name="horaInicio" type="text" placeholder="Hora Inicio" readonly>
+		                	<label>Hora Inicio</label>
+		                </div>
+		                <div class="6u">
+		                    <input id="horaFin" name="horaFin" type="text" placeholder="Hora Fin" readonly>
+		                	<label>Hora Fin</label>
+		                </div>
+                	</div>
+                </div>
+
+                <br/>
+                <ul class="actions">
+                	<input id="submit" name="enviar" type="submit" value="Enviar" class="button special" />
+                </ul>
+                </fieldset>
+
+            </form>
+    </body>
+</html>
