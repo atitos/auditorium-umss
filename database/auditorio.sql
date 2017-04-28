@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-04-2017 a las 19:34:36
+-- Tiempo de generación: 28-04-2017 a las 21:03:53
 -- Versión del servidor: 5.6.24
 -- Versión de PHP: 5.6.8
 
@@ -278,14 +278,7 @@ CREATE TABLE IF NOT EXISTS `reserva` (
   `HORAINICIO` time NOT NULL,
   `HORAFIN` time NOT NULL,
   `SOLICITANTE` varchar(200) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `reserva`
---
-
-INSERT INTO `reserva` (`IDRESERVA`, `IDUSUARIO`, `IDAMBIENTE`, `TITULORESERVA`, `DESCRIPCIONRESERVA`, `FECHAINICIO`, `FECHAFIN`, `HORAINICIO`, `HORAFIN`, `SOLICITANTE`) VALUES
-(1, 10000, 101, 'taller de inicio', 'se daran cursos', '0000-00-00', '0000-00-00', '17:00:00', '17:00:00', '');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -322,13 +315,6 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `SEGUNDOAPELLIDO` varchar(100) NOT NULL,
   `PASSWORD` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `usuario`
---
-
-INSERT INTO `usuario` (`IDUSUARIO`, `IDROL`, `CIUSUARIO`, `NOMBREUSUARIO`, `PRIMERAPELLIDO`, `SEGUNDOAPELLIDO`, `PASSWORD`) VALUES
-(10000, 1, 789456, 'maria leticia ', 'blanco', 'coca', '123');
 
 --
 -- Índices para tablas volcadas
@@ -378,7 +364,12 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `IDRESERVA` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `IDRESERVA` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `IDUSUARIO` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Restricciones para tablas volcadas
 --
@@ -394,13 +385,6 @@ ADD CONSTRAINT `FK_R_1` FOREIGN KEY (`IDFACULTAD`) REFERENCES `facultad` (`IDFAC
 --
 ALTER TABLE `calendario`
 ADD CONSTRAINT `FK_R_5` FOREIGN KEY (`IDFACULTAD`) REFERENCES `facultad` (`IDFACULTAD`);
-
---
--- Filtros para la tabla `reserva`
---
-ALTER TABLE `reserva`
-ADD CONSTRAINT `FK_R_2` FOREIGN KEY (`IDUSUARIO`) REFERENCES `usuario` (`IDUSUARIO`),
-ADD CONSTRAINT `FK_R_3` FOREIGN KEY (`IDAMBIENTE`) REFERENCES `ambiente` (`IDAMBIENTE`);
 
 --
 -- Filtros para la tabla `usuario`
