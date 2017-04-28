@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-04-2017 a las 02:33:47
+-- Tiempo de generación: 28-04-2017 a las 19:34:36
 -- Versión del servidor: 5.6.24
 -- Versión de PHP: 5.6.8
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `auditoriumbd`
+-- Base de datos: `auditorio`
 --
 
 -- --------------------------------------------------------
@@ -278,7 +278,14 @@ CREATE TABLE IF NOT EXISTS `reserva` (
   `HORAINICIO` time NOT NULL,
   `HORAFIN` time NOT NULL,
   `SOLICITANTE` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `reserva`
+--
+
+INSERT INTO `reserva` (`IDRESERVA`, `IDUSUARIO`, `IDAMBIENTE`, `TITULORESERVA`, `DESCRIPCIONRESERVA`, `FECHAINICIO`, `FECHAFIN`, `HORAINICIO`, `HORAFIN`, `SOLICITANTE`) VALUES
+(1, 10000, 101, 'taller de inicio', 'se daran cursos', '0000-00-00', '0000-00-00', '17:00:00', '17:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -315,6 +322,13 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `SEGUNDOAPELLIDO` varchar(100) NOT NULL,
   `PASSWORD` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`IDUSUARIO`, `IDROL`, `CIUSUARIO`, `NOMBREUSUARIO`, `PRIMERAPELLIDO`, `SEGUNDOAPELLIDO`, `PASSWORD`) VALUES
+(10000, 1, 789456, 'maria leticia ', 'blanco', 'coca', '123');
 
 --
 -- Índices para tablas volcadas
@@ -356,6 +370,15 @@ ALTER TABLE `rol`
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`IDUSUARIO`), ADD KEY `FK_RELATIONSHIP_4` (`IDROL`);
 
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `reserva`
+--
+ALTER TABLE `reserva`
+  MODIFY `IDRESERVA` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- Restricciones para tablas volcadas
 --
