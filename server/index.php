@@ -1,6 +1,9 @@
 <?php
+    include 'conexion.php';
+
     header('Content-Type: application/json');
 
+    $sqlCon = conexion()
     $aResult = array();
 
     if( !isset($_POST['accion']) ) {
@@ -11,23 +14,44 @@
 
         switch($_POST['accion']) {
             case 'registrarUsuario':
-              if( !is_array($_POST['parametros']) || (count($_POST['parametros']) < 2) ) {
+              if( !is_array($_POST['parametros']) || (count($_POST['parametros']) < 1) ) {
                   $aResult['error'] = 'Error en Parametros!';
               }
               else {
                 $aResult['respuesta'] = "Request Arrived!!! Usuario Registrado";
-                //$aResult['result'] = add(floatval($_POST['arguments'][0]), floatval($_POST['arguments'][1]));
+                // adicionar codigo para llamar a las funciones SQL
               }
               break;
             case 'registrarEvento':
+              if( !is_array($_POST['parametros']) || (count($_POST['parametros']) < 1) ) {
+                  $aResult['error'] = 'Error en Parametros!';
+              }
+              else {
+                $aResult['respuesta'] = "Request Arrived!!! Evento Registrado";
+                // adicionar codigo para llamar a las funciones SQL
+              }
               break;
-            case 'registrarfacultad':
+            case 'registrarFacultad':
+              if( !is_array($_POST['parametros']) || (count($_POST['parametros']) < 1) ) {
+                  $aResult['error'] = 'Error en Parametros!';
+              }
+              else {
+                $aResult['respuesta'] = "Request Arrived!!! Facultad Registrado";
+                // adicionar codigo para llamar a las funciones SQL
+              }
               break;
             case 'registrarAmbiente':
+              if( !is_array($_POST['parametros']) || (count($_POST['parametros']) < 1) ) {
+                  $aResult['error'] = 'Error en Parametros!';
+              }
+              else {
+                $aResult['respuesta'] = "Request Arrived!!! Ambiene Registrado";
+                // adicionar codigo para llamar a las funciones SQL
+              }
               break;
 
             default:
-               $aResult['error'] = 'La accion "'.$_POST['functionname'].'" no existe!';
+               $aResult['error'] = 'La accion "'.$_POST['accion'].'" no existe!';
                break;
         }
 

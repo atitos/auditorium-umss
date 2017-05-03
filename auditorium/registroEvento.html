@@ -50,7 +50,10 @@
 			});
 			$("#formulario").submit(function(jsEvent){
 				jsEvent.preventDefault();
-				enviarConsultaPhp("http://localhost/server/", "registrarUsuario", ["arg1","arg2"]);
+				//enviarConsultaPhp("http://localhost/server/", "registrarUsuario", ["arg1","arg2"]);
+                $.magnificPopup.close();
+                // actualizar calendario
+                return false
 			});
         });
         </script>
