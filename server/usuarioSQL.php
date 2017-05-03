@@ -2,7 +2,7 @@
 
    function insertarUsuario($conexion,$idUsuario,$idRol,$ciUsuario,$nombreUsuario,$primerApellido,$segundoAplellido,$password){
 
-   $insert = "INSERT INTO usuario(IDUSUARIO,IDROL,CIUSUARIO,NOMBREUSUARIO,PRIMERAPELLIDO,SEGUNDOAPELLIDO,PASSWORD) VALUES($idUsuario,$idRol,$ciUsuario,$nombreUsuario,$primerApellido,$segundoAplellido,$password)";
+   $insert = "INSERT INTO usuario(IDUSUARIO,IDROL,CIUSUARIO,NOMBREUSUARIO,PRIMERAPELLIDO,SEGUNDOAPELLIDO,PASSWORD) VALUES($idUsuario,$idRol,$ciUsuario,'$nombreUsuario','$primerApellido','$segundoAplellido','$password')";
    $resultado = mysqli_query($conexion, $insert);
 
    }
