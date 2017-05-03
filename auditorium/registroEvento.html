@@ -18,6 +18,7 @@
         <script src="assets/js/moment.min.js"></script>
         <script src="assets/js/fullcalendar.js"></script>
         <script src="assets/js/magnific-popup.js"></script>
+        <script src="javascript/base.js"></script>
         <script>
         $(document).ready(function() {
 
@@ -47,8 +48,12 @@
 				type: 'inline',
 				preloader: false
 			});
-			$(".popup-form").submit(function(jsEvent){
+			$("#formulario").submit(function(jsEvent){
 				jsEvent.preventDefault();
+				//enviarConsultaPhp("http://localhost/server/", "registrarUsuario", ["arg1","arg2"]);
+                $.magnificPopup.close();
+                // actualizar calendario
+                return false
 			});
         });
         </script>
