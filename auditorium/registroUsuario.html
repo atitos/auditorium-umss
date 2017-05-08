@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Registro</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/skel.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+		<script src="javascript/base.js"></script>
+		<script>
+			$(document).ready(function() {
+
+				$("#formulario").submit(function(jsEvent){
+					console.log('submit');
+					jsEvent.preventDefault();
+					enviarConsultaPhp(
+						"http://localhost/server/",
+						"registrarUsuario",
+						[$('select').val(), $('input#ci').val(),
+						 $('input#nombre').val(), $('input#apellidoPaterno').val(),
+						 $('input#apellidoMaterno').val(), $('input#password').val()]);
+                	$('#formulario')[0].reset();
+	                return false
+				});
+
+	        });
+		</script>
+	</head>
+	<body class="landing">
+		<!-- Page Wrapper -->
+		<div id="page-wrapper">
+			<!-- Header -->
+			<header id="header">
+				<h1><a href="index.html">Auditorium - Registro</a></h1>
+				<nav id="nav">
+					<ul>
+						<li class="special">
+							<a href="#menu" class="menuToggle"><span>Menu</span></a>
+							<div id="menu">
+								<ul>
+									<li><a href="index.html">Inicio</a></li>
+									<li><a href="informacion.html">Informacion</a></li>
+									<!--<li><a href="elements.html">Elementos</a></li>
+									<li><a href="#">Ingresar</a></li>-->
+									<li><a href="registro.html">Registrarse</a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</nav>
+					<!-- Main -->
+			</header>
+			<article id="main">
+				<section id="banner">
+					<div class="inner">
+						<h2>REGISTRO</h2>
+						<p>Aqui deberas registrarte para que podamos identificarte y brindarte nuestro servicio</p>
+					</div>
+				</section>			
+			</article>
+		
+
+			<!--formulario-->
+			<div align="center" >
+
+				<form class="form" id="formulario">
+					<fieldset>
+					    <legend>FORMULARIO DE REGISTRO DE USUARIO</legend>
+					    <b/>
+					    <div  class="form-group">
+					    <label>Carnet de identidad</label>
+					    	<input type="text" name="ci" id="ci" placeholder="carnet de identidad" required="" >
+					    </div>
+					    <div class="form-group">
+			            <label>Nombre</label>
+			                <input id="nombre" name="nombre" type="text" placeholder="nombre completo" required="" />
+			            </div>    
+			            <div class="form-group">
+			            <label>Apellido Paterno</label>
+			                <input id="apellidoPaterno" name="apellidoPaterno" type="text" placeholder="primer apellido" required="">
+			            </div>
+			            <div class="form-group">
+			            <label>Apellido Materno</label>
+			                <input id="apellidoMaterno" name="apellidoMaterno" type="text" placeholder="segundo apellido">
+			            </div>
+			            <div class="form-group">
+			            	<label>Password</label>
+			            	<input type="password" name="password" id="password" placeholder="password" required="">
+			            </div>
+			            <label>Cargo</label> 
+			            <div class="form-group">
+							<div class="select-wrapper">
+								<select name="cargo" id="cargo">
+									<option value=0>- Seleccionar Cargo -</option>
+									<option value=1>Administrador</option>
+									<option value=2>Docente</option>
+									<option value=3>Secretaria</option>
+								</select>
+							</div>
+						</div>
+						<br/>
+
+			            <input id="enviar" name="enviar" type="submit" value="Enviar" />
+		            </fieldset>
+
+				</form>
+			</div>
+
+			<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<!--<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                    <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+					<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+					-->
+					<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Auditorium</li><li>creado por: tis 1/2017 <!-- <a href="http://html5up.net">HTML5 UP</a>--></li>
+				</ul>
+			</footer>
+
+		</div>
+
+	</body>
+</html>

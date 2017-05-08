@@ -21,7 +21,7 @@ var enviarConsultaPhp = function(url, act, args){
                  }
         },
         error: function (req, textoEstado, textoError) {
-            console.log("ERROR");
+            console.log(textoError);
         },
         complete: function (req, textoEstado) {
             console.log("COMPLETE");

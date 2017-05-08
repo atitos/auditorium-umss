@@ -34,13 +34,18 @@
             });
 			$("#agenda").fullCalendar({
 				dayClick: function(date, jsEvent, view){
-					var horaInicio = $("input[type=text]#horaInicio").val();
-					if (horaInicio === "")
+					var horaInicio = $("input#horaInicio");
+                    var horaFin = $("input#horaFin");
+
+					if (horaInicio.is(':focus'))
 					{
-						$("input[type=text]#horaInicio").val(date.format("hh:mm"));
+						$("input#horaInicio").val(date.format("hh:mm"));
+                        $("input#fechaInicio").val(date.format("YYYY-MM-DD"));
 					}
-					else {
-						$("input[type=text]#horaFin").val(date.format("hh:mm"));
+					else if (horaFin.is(':focus'))
+                    {
+						$("input#horaFin").val(date.format("hh:mm"));
+                        $("input#fechaFin").val(date.format("YYYY-MM-DD"));
 					}
 				}
 			});
@@ -50,7 +55,15 @@
 			});
 			$("#formulario").submit(function(jsEvent){
 				jsEvent.preventDefault();
-				//enviarConsultaPhp("http://localhost/server/", "registrarUsuario", ["arg1","arg2"]);
+				enviarConsultaPhp(
+                    "http://localhost/server/",
+                    "registrarEvento",
+                    [4, 100,
+                     $('input#titulo').val(), $('input#descripcion').val(),
+                     $('input#fechaInicio').val(), $('input#fechaFin').val(),
+                     $('input#horaInicio').val()+':00', $('input#horaFin').val()+':00',
+                     $('input#usuario').val()]);
+                $('#formulario')[0].reset();
                 $.magnificPopup.close();
                 // actualizar calendario
                 return false
@@ -134,7 +147,7 @@
                 <button title="Close (Esc)" type="button" class="mfp-close">×</button>
                 <div>
                 <label>Usuario</label>
-                    <input type="text" name="usuario" id="usuario" placeholder="Insertar Usuario" required="" >
+                    <input type="text" name="usuario" id="usuario" placeholder="Insertar Usuario" required="" />
                 </div>
                 <div>
                 <label>Titulo</label>
@@ -142,7 +155,7 @@
                 </div>    
                 <div>
                 <label>Descripcion</label>
-                    <input id="descripcion" name="descripcion" type="text" placeholder="Insertar Descripcion" required="">
+                    <input id="descripcion" name="descripcion" type="text" placeholder="Insertar Descripcion" required=""/>
                 </div>
 
                 <br/>
@@ -150,12 +163,14 @@
                 <div id="agenda-container">
                 	<div id="agenda" class="12u"></div>
                 	<div class="row">
+                        <input type="hidden" name="fechaInicio" id="fechaInicio">
+                        <input type="hidden" name="fechaFin" id="fechaFin">
                 		<div class="6u">
-		                    <input id="horaInicio" name="horaInicio" type="text" placeholder="Hora Inicio" readonly>
+		                    <input id="horaInicio" name="horaInicio" type="text" placeholder="Hora Inicio" readonly/>
 		                	<label>Hora Inicio</label>
 		                </div>
 		                <div class="6u">
-		                    <input id="horaFin" name="horaFin" type="text" placeholder="Hora Fin" readonly>
+		                    <input id="horaFin" name="horaFin" type="text" placeholder="Hora Fin" readonly/>
 		                	<label>Hora Fin</label>
 		                </div>
                 	</div>

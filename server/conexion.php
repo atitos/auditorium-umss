@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 function conexion()
 {
    // datos de la bse de datos
@@ -11,9 +12,6 @@ function conexion()
    $conexion = mysqli_connect($servidor, $usuario, $contraseña, $nombreBD ) or die(" Error de conexion al servidor");
 
    return $conexion;
-   
-
-  }
-
+ }
     	
  ?>
