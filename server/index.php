@@ -20,6 +20,8 @@
               else {
                 $aResult['respuesta'] = "Request Arrived!!! Usuario Registrado";
                 // adicionar codigo para llamar a las funciones SQL
+                include 'UsuarioSQL.php';
+                insertarUsuario();
               }
               break;
             case 'registrarEvento':

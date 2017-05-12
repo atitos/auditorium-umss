@@ -1,8 +1,8 @@
 <?php 
 
-   function insertarUsuario($conexion,$idUsuario,$idRol,$ciUsuario,$nombreUsuario,$primerApellido,$segundoAplellido,$password){
+   function insertarUsuario($conexion,$idRol,$ciUsuario,$nombreUsuario,$primerApellido,$segundoAplellido,$password){
 
-   $insert = "INSERT INTO usuario(IDUSUARIO,IDROL,CIUSUARIO,NOMBREUSUARIO,PRIMERAPELLIDO,SEGUNDOAPELLIDO,PASSWORD) VALUES($idUsuario,$idRol,$ciUsuario,'$nombreUsuario','$primerApellido','$segundoAplellido','$password')";
+   $insert = "INSERT INTO usuario(IDROL,CIUSUARIO,NOMBREUSUARIO,PRIMERAPELLIDO,SEGUNDOAPELLIDO,PASSWORD) VALUES($idRol,$ciUsuario,'$nombreUsuario','$primerApellido','$segundoAplellido','$password')";
    $resultado = mysqli_query($conexion, $insert);
 
    }

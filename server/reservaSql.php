@@ -17,4 +17,10 @@
 
            
 	}
+
+	 function mostrarReserva($conexion){
+
+    $selecionar="SELECT IDRESERVA, TITULORESERVA FROM reserva";
+    $resultado=mysqli_query($conexion,$selecionar);
+   }
    ?>
