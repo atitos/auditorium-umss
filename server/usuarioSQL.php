@@ -8,22 +8,25 @@
   }
 
 
-  function eliminarUsuario($conexion,$idUsuario){
-
+  function eliminarUsuario($conexion,$idUsuario)
+  {
     $delete = "DELETE FROM usuario
               WHERE IDUSUARIO = $idUsuario";
     $resultado = mysqli_query($conexion, $delete);
-
   }
 
 
-  function actualizarUsuario($conexion,$idUsuario,$idRol,$nombreUsuario,$primerApellido,$segundoApellido,$password){
-
+  function actualizarUsuario($conexion,$idUsuario,$idRol,$nombreUsuario,$primerApellido,$segundoApellido,$password)
+  {
     $update = "UPDATE usuario 
-              SET IDROL=$idRol, CIUSUARIO=$ciUsuario, NOMBREUSUARIO=$nombreUsuario, PRIMERAPELLIDO=$primerApellido, SEGUNDOAPELLIDO=$segundoApellido, PASSWORD=$password
-              WHERE IDUSUARIO=$idUsuario";
+               SET IDROL=$idRol,
+                   CIUSUARIO=$ciUsuario,
+                   NOMBREUSUARIO=$nombreUsuario,
+                   PRIMERAPELLIDO=$primerApellido,
+                   SEGUNDOAPELLIDO=$segundoApellido,
+                   PASSWORD=$password
+               WHERE IDUSUARIO=$idUsuario";
     $resultado = mysqli_query($conexion, $update);
-
   }
 
 
