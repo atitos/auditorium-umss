@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Registro Facultad</title>
+        <title>Registro Ambiente</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="assets/css/main.css" />
@@ -22,9 +22,9 @@
                     jsEvent.preventDefault();
                     enviarConsultaPhp(
                         "http://localhost/server/",
-                        "registrarFacultad",
-                        [$('input#nomFc').val(), $('input#dirFc').val(),
-                         $('input#telfFc').val()]);
+                        "registrarAmbiente",
+                        [$('select').val(), $('input#tipoAmb').val(),
+                         $('input#nomAmb').val(), $('input#dirAmb').val()]);
                     $('#formulario')[0].reset();
                     return false
                 });
@@ -37,7 +37,7 @@
         <div id="page-wrapper">
             <!-- Header -->
             <header id="header">
-                <h1><a href="index.html">Auditorium - Registro Facultad</a></h1>
+                <h1><a href="index.html">Auditorium - Registro Ambiente</a></h1>
                 <nav id="nav">
                     <ul>
                         <li class="special">
@@ -45,7 +45,7 @@
                             <div id="menu">
                                 <ul>
                                     <li><a href="index.html">Inicio</a></li>
-                                    <li><a href="registroUsusario.html">Registrarse</a></li>
+                                    <li><a href="informacion.html">Informacion</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -56,8 +56,8 @@
             <article id="main">
                 <section id="banner">
                     <div class="inner">
-                        <h2>REGISTRO - FACULTAD</h2>
-                        <p>Aqui deberas registrar las Facultades disponibles para ser usadas en el sistema</p>
+                        <h2>REGISTRO - AMBIENTE</h2>
+                        <p>Aqui deberas registrar un nuevo ambiente para poder tenerlo disponible en el sistema</p>
                     </div>
                 </section>            
             </article>
@@ -65,29 +65,36 @@
 
             <!--formulario-->
             <div align="center" >
-
-                <form class="form" id="formulario">
+                <form class="form" id="formulario" action="registro.php" method="post">
                     <fieldset>
-                        <legend>FORMULARIO DE REGISTRO DE FACULTAD</legend>
-                        <b/>
-                        <div  class="form-group">
-                        <label>Nombre</label>
-                            <input type="text" name="nomFc" id="nomFc" placeholder="Nombre Facultad" required="" >
+                        <legend>FORMULARIO DE REGISTRO DE AMBIENTE</legend>
+			            <label>Facultad</label> 
+			            <div class="form-group">
+							<div class="select-wrapper">
+								<select name="cargo" id="cargo">
+									<option value=0>- Seleccionar Facultad -</option>
+									<option value=1>FCE</option>
+									<option value=1000>FCYT</option>
+								</select>
+							</div>
+						</div>
+                        <div class="form-group">
+                        	<label>Nombre del Ambiente</label>
+                            <input id="nomAmb" name="nomAmb" type="text" placeholder="Nombre del Ambiente" required="" />
                         </div>
                         <div class="form-group">
-                        <label>Direccion</label>
-                            <input id="dirFc" name="dirFc" type="text" placeholder="Direccion Facultad" required="" />
-                        </div>    
+                            <label>Tipo Ambiente</label>
+                            <input id="tipoAmb" name="tipoAmb" type="text" placeholder="Tipo de Ambiente" required="" />
+                        </div>
                         <div class="form-group">
-                        <label>Telefono</label>
-                            <input id="telfFc" name="telfFc" type="text" placeholder="Telefono" required="">
+                            <label>Direccion Ambiente</label>
+                            <input id="dirAmb" name="dirAmb" type="text" placeholder="Direccion del Ambiente" required="" />
                         </div>
 
                         <br/>
 
-                        <input id="enviar" name="enviar" type="submit" value="Enviar" />
+                        <input id="campo3" name="enviar" type="submit" value="Enviar" />
                     </fieldset>
-
                 </form>
             </div>
 
@@ -100,7 +107,6 @@
                     <li>&copy; TIS 1/2017</li><li>SimpleSoft S.R.L.</li>
                 </ul>
             </footer>
-
         </div>
 
     </body>

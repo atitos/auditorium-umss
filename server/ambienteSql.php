@@ -11,23 +11,23 @@
     function eliminarAmbiente($conexion,$idAmbiente){
 
    $delete = "DELETE FROM  ambiente WHERE IDAMBIENTE = $idAmbiente";
-   $resultado = mysqli_query($conexion, $delete)
+   $resultado = mysqli_query($conexion, $delete);
 
-   }
+  }
 
 
     function actualizarAmbiente($conexion,$idAmbiente,$idFacultad,$tipoAmbiente,$nombreAmbiente,$direccionAmbiente){
 
    $update = "UPDATE ambiente SET IDFACULTAD=$idFacultad, TIPOAMBIENTE=$tipoAmbiente, NOMBREAMBIENTE=$nombreAmbiente, DIRECCIONAMBIENTE=$direccionAmbiente WHERE IDAMBIENTE=$idAmbiente";
-   $resultado = mysqli_query($conexion, $update)
+   $resultado = mysqli_query($conexion, $update);
 
-   }
+  }
 
-    function mostrarAmbiente($conexion){
+  function mostrarAmbiente($conexion){
 
     $selecionar="SELECT IDAMBIENTE, NOMBREAMBIENTE FROM ambiente";
     $resultado=mysqli_query($conexion,$selecionar);
-   }
+  }
 
 
  ?>

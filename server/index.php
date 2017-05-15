@@ -2,6 +2,8 @@
 include 'conexion.php';
 include 'usuarioSQL.php';
 include 'reservaSql.php';
+include 'facultadSql.php';
+include 'ambienteSql.php';
 
 header('Content-Type: application/json');
 
@@ -47,8 +49,10 @@ if( !isset($aResult['error']) ) {
               $aResult['error'] = 'Error en Parametros!';
           }
           else {
-            $aResult['respuesta'] = "Request Arrived!!! Facultad Registrado";
-            // adicionar codigo para llamar a las funciones SQL
+            insertarFacultad($sqlCon, $_POST['parametros'][0],
+                                      $_POST['parametros'][1],
+                                      $_POST['parametros'][2]);
+            $aResult['respuesta'] = "Facultad Registrada";
           }
           break;
 
@@ -57,8 +61,9 @@ if( !isset($aResult['error']) ) {
               $aResult['error'] = 'Error en Parametros!';
           }
           else {
-            $aResult['respuesta'] = "Request Arrived!!! Ambiene Registrado";
-            // adicionar codigo para llamar a las funciones SQL
+            insertarAmbiente($sqlCon, $_POST['parametros'][0], $_POST['parametros'][1],
+                                      $_POST['parametros'][2], $_POST['parametros'][3]);
+            $aResult['respuesta'] = "Ambiene Registrado";
           }
           break;
 
