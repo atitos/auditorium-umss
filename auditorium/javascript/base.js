@@ -24,7 +24,10 @@ var enviarConsultaPhp = function(url, act, args){
             console.log(textoError);
         },
         complete: function (req, textoEstado) {
-            console.log("COMPLETE");
+            if (act === 'registrarEvento')
+            {
+                $('#calendar').fullCalendar('refetchEvents')
+            }
         }
     });
 }

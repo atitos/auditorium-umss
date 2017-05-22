@@ -20,10 +20,20 @@ function actualizarReserva($con,$idreserva,$titulo,$descripcion,$fechainicio,$fe
 			WHERE IDRESERVA='$idreserva'");
 }
 
-function mostrarReserva($conexion)
+function mostrarReserva($conexion,$fechaInicio,$fechaFin)
 {
-    $selecionar="SELECT IDRESERVA, TITULORESERVA FROM reserva";
+	$filas = array();
+    $selecionar="SELECT IDRESERVA, TITULORESERVA, FECHAINICIO, FECHAFIN, HORAINICIO, HORAFIN
+                 FROM reserva
+                 WHERE (FECHAINICIO BETWEEN '$fechaInicio' AND '$fechaFin')
+                 OR (FECHAFIN BETWEEN '$fechaInicio' AND '$fechaFin')
+                 OR ('$fechaInicio' BETWEEN FECHAINICIO AND FECHAFIN)
+                 OR ('$fechaFin' BETWEEN FECHAINICIO AND FECHAFIN)";
     $resultado=mysqli_query($conexion,$selecionar);
+    while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+        $filas[] = $fila;
+    }
+    return $filas;
 }
 
 ?>

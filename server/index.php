@@ -10,70 +10,104 @@ header('Content-Type: application/json');
 $sqlCon = conexion();
 $aResult = array();
 
-if( !isset($_POST['accion']) ) {
-    $aResult['error'] = 'Servicio no encontrado!';
-  }
-
-if( !isset($aResult['error']) ) {
-
-    switch($_POST['accion']) {
-        case 'registrarUsuario':
-          if( !is_array($_POST['parametros']) || (count($_POST['parametros']) < 1) ) {
-              $aResult['error'] = 'Error en Parametros!';
-          }
-          else {
-
-            insertarUsuario($sqlCon, $_POST['parametros'][0], $_POST['parametros'][1],
-                                    $_POST['parametros'][2], $_POST['parametros'][3],
-                                    $_POST['parametros'][4], $_POST['parametros'][5]);
-            $aResult['respuesta'] = 'Usuario Registrado';
-          }
-          break;
-
-        case 'registrarEvento':
-          if( !is_array($_POST['parametros']) || (count($_POST['parametros']) < 1) ) {
-              $aResult['error'] = 'Error en Parametros!';
-          }
-          else {
-            insertarReserva($sqlCon, $_POST['parametros'][0], $_POST['parametros'][1],
-                                    $_POST['parametros'][2], $_POST['parametros'][3],
-                                    $_POST['parametros'][4], $_POST['parametros'][5],
-                                    $_POST['parametros'][6], $_POST['parametros'][7],
-                                    $_POST['parametros'][8]);
-            $aResult['respuesta'] = "Evento Registrado";
-          }
-          break;
-
-        case 'registrarFacultad':
-          if( !is_array($_POST['parametros']) || (count($_POST['parametros']) < 1) ) {
-              $aResult['error'] = 'Error en Parametros!';
-          }
-          else {
-            insertarFacultad($sqlCon, $_POST['parametros'][0],
-                                      $_POST['parametros'][1],
-                                      $_POST['parametros'][2]);
-            $aResult['respuesta'] = "Facultad Registrada";
-          }
-          break;
-
-        case 'registrarAmbiente':
-          if( !is_array($_POST['parametros']) || (count($_POST['parametros']) < 1) ) {
-              $aResult['error'] = 'Error en Parametros!';
-          }
-          else {
-            insertarAmbiente($sqlCon, $_POST['parametros'][0], $_POST['parametros'][1],
-                                      $_POST['parametros'][2], $_POST['parametros'][3]);
-            $aResult['respuesta'] = "Ambiene Registrado";
-          }
-          break;
-
-        default:
-           $aResult['error'] = 'La accion "'.$_POST['accion'].'" no existe!';
-           break;
-    }
-
+if ( isset($_GET['accion']) ) {
+    $aResult = runGET($sqlCon, $_GET);
+}
+elseif ( isset($_POST['accion']) ) {
+  $aResult = runPOST($sqlCon, $_POST);
+}
+else {
+  $aResult['error'] = 'Servicio no encontrado!';
 }
 
 echo json_encode($aResult);
 
+
+function runGET ($sqlCon, $get)
+{
+  $result = array();
+
+  switch ($get['accion']) {
+    case 'getReservas':
+      $sqlResults = mostrarReserva($sqlCon, $get['start'], $get['end']);
+      foreach ($sqlResults as $sqlResult) {
+        $fila['id'] = $sqlResult['IDRESERVA'];
+        $fila['title'] = $sqlResult['TITULORESERVA'];
+        $fila['start'] = $sqlResult['FECHAINICIO'].'T'.$sqlResult['HORAINICIO'];
+        $fila['end'] = $sqlResult['FECHAFIN'].'T'.$sqlResult['HORAFIN'];
+
+        $result[] = $fila;
+      }
+      break;
+    
+    default:
+      $result['error'] = 'La accion "'.$get['accion'].'" no existe!';
+      break;
+  }
+
+  return $result;
+}
+
+function runPOST($sqlCon, $post)
+{
+  $result = array();
+
+  switch($post['accion']) {
+      case 'registrarUsuario':
+        if( !is_array($post['parametros']) || (count($post['parametros']) < 1) ) {
+            $result['error'] = 'Error en Parametros!';
+        }
+        else {
+
+          insertarUsuario($sqlCon, $post['parametros'][0], $post['parametros'][1],
+                                  $post['parametros'][2], $post['parametros'][3],
+                                  $post['parametros'][4], $post['parametros'][5]);
+          $result['respuesta'] = 'Usuario Registrado';
+        }
+        break;
+
+      case 'registrarEvento':
+        if( !is_array($post['parametros']) || (count($post['parametros']) < 1) ) {
+            $result['error'] = 'Error en Parametros!';
+        }
+        else {
+          insertarReserva($sqlCon, $post['parametros'][0], $post['parametros'][1],
+                                  $post['parametros'][2], $post['parametros'][3],
+                                  $post['parametros'][4], $post['parametros'][5],
+                                  $post['parametros'][6], $post['parametros'][7],
+                                  $post['parametros'][8]);
+          $result['respuesta'] = "Evento Registrado";
+        }
+        break;
+
+      case 'registrarFacultad':
+        if( !is_array($post['parametros']) || (count($post['parametros']) < 1) ) {
+            $result['error'] = 'Error en Parametros!';
+        }
+        else {
+          insertarFacultad($sqlCon, $post['parametros'][0],
+                                    $post['parametros'][1],
+                                    $post['parametros'][2]);
+          $result['respuesta'] = "Facultad Registrada";
+        }
+        break;
+
+      case 'registrarAmbiente':
+        if( !is_array($post['parametros']) || (count($post['parametros']) < 1) ) {
+            $result['error'] = 'Error en Parametros!';
+        }
+        else {
+          insertarAmbiente($sqlCon, $post['parametros'][0], $post['parametros'][1],
+                                    $post['parametros'][2], $post['parametros'][3]);
+          $result['respuesta'] = "Ambiene Registrado";
+        }
+        break;
+
+      default:
+         $result['error'] = 'La accion "'.$post['accion'].'" no existe!';
+         break;
+  }
+
+  return $result;
+}
 ?>

@@ -4,21 +4,21 @@
         <title>Reserva</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="assets/css/main.css" />
-        <link rel="stylesheet" href="assets/css/fullcalendar.css" />
-        <link rel="stylesheet" href="assets/css/magnific-popup.css" />
-        <link rel="stylesheet" href="assets/css/custom.css" />
+        <link rel="stylesheet" href="../assets/css/main.css" />
+        <link rel="stylesheet" href="../assets/css/fullcalendar.css" />
+        <link rel="stylesheet" href="../assets/css/magnific-popup.css" />
+        <link rel="stylesheet" href="../assets/css/custom.css" />
         <!-- Scripts -->
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/js/jquery.scrollex.min.js"></script>
-        <script src="assets/js/jquery.scrolly.min.js"></script>
-        <script src="assets/js/skel.min.js"></script>
-        <script src="assets/js/util.js"></script>
-        <script src="assets/js/main.js"></script>
-        <script src="assets/js/moment.min.js"></script>
-        <script src="assets/js/fullcalendar.js"></script>
-        <script src="assets/js/magnific-popup.js"></script>
-        <script src="javascript/base.js"></script>
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/jquery.scrollex.min.js"></script>
+        <script src="../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../assets/js/skel.min.js"></script>
+        <script src="../assets/js/util.js"></script>
+        <script src="../assets/js/main.js"></script>
+        <script src="../assets/js/moment.min.js"></script>
+        <script src="../assets/js/fullcalendar.js"></script>
+        <script src="../assets/js/magnific-popup.js"></script>
+        <script src="../javascript/base.js"></script>
         <script>
         $(document).ready(function() {
 
@@ -30,9 +30,27 @@
                 		modal: true
                 	});
                 	$('#agenda').fullCalendar('changeView', 'agendaDay', pickedDate);
-                }
+                },
+                eventSources: [
+
+                    {
+                        url: 'http://localhost/server',
+                        type: 'GET',
+                        data: {
+                            accion: 'getReservas'
+                        },
+                        error: function() {
+                            alert('ERROR al obtener las reservas.');
+                        }
+                    }
+
+                ]
             });
 			$("#agenda").fullCalendar({
+                minTime: '06:45:00',
+                maxTime: '22:00:00',
+                slotDuration: '00:15:00',
+                slotLabelInterval: '00:15:00',
 				dayClick: function(date, jsEvent, view){
 					var horaInicio = $("input#horaInicio");
                     var horaFin = $("input#horaFin");
@@ -47,7 +65,21 @@
 						$("input#horaFin").val(date.format("hh:mm"));
                         $("input#fechaFin").val(date.format("YYYY-MM-DD"));
 					}
-				}
+				},
+                eventSources: [
+
+                    {
+                        url: 'http://localhost/server',
+                        type: 'GET',
+                        data: {
+                            accion: 'getReservas'
+                        },
+                        error: function() {
+                            alert('ERROR al obtener las reservas.');
+                        }
+                    }
+
+                ]
 			});
             $(".popup-form").magnificPopup({
 				type: 'inline',
@@ -65,7 +97,7 @@
                      $('input#usuario').val()]);
                 $('#formulario')[0].reset();
                 $.magnificPopup.close();
-                // actualizar calendario
+                $('#calendar').fullCalendar('refetchEvents');
                 return false
 			});
         });
@@ -83,9 +115,8 @@
                                 <a href="#menu" class="menuToggle"><span>Menu</span></a>
                                 <div id="menu">
                                     <ul>
-                                        <li><a href="index.html">Inicio</a></li>
+                                        <li><a href="../index.html">Inicio</a></li>
                                         <li><a href="informacion.html">Informacion</a></li>
-                                        <li><a href="registroEvento.html">Reserva</a></li>
                                     </ul>
                                 </div>
                             </li>
@@ -121,20 +152,14 @@
                         </div>
                     </section>        
                 </article>
-                <!--Calendar-->
 
                 <!-- Footer -->
                 <footer id="footer">
                     <ul class="icons">
-                        <!--<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-                        <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-                        <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
-                        -->
                         <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-                        <li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
                     </ul>
                     <ul class="copyright">
-                        <li>&copy; Auditorium</li><li>creado por: tis 1/2017 <!-- <a href="http://html5up.net">HTML5 UP</a>--></li>
+                        <li>&copy; TIS 1/2017</li><li>SimpleSoft S.R.L.</li>
                     </ul>
                 </footer>
 
