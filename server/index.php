@@ -29,7 +29,7 @@ function runGET ($sqlCon, $get)
 
   switch ($get['accion']) {
     case 'getReservas':
-      $sqlResults = mostrarReserva($sqlCon, $get['start'], $get['end']);
+      $sqlResults = mostrarReservas($sqlCon, $get['start'], $get['end']);
       foreach ($sqlResults as $sqlResult) {
         $fila['id'] = $sqlResult['IDRESERVA'];
         $fila['title'] = $sqlResult['TITULORESERVA'];
@@ -39,10 +39,29 @@ function runGET ($sqlCon, $get)
         $result[] = $fila;
       }
       break;
+   
     
+    case 'getReserva':
+
+     $sqlResults = mostrarReserva($sqlCon, $get['idReserva']);
+      foreach ($sqlResults as $sqlResult) {
+        $fila['usuario'] = $sqlResult['SOLICITANTE'];
+        $fila['titulo'] = $sqlResult['TITULORESERVA'];
+        $fila['descripcion'] = $sqlResult['DESCRIPCIONRESERVA'];
+        $fila['fechaInicio'] = $sqlResult['FECHAINICIO'];
+        $fila['fechaFin'] = $sqlResult['FECHAFIN'];
+        $fila['horaInicio'] = $sqlResult['HORAINICIO'];
+        $fila['horaFin']=$sqlResult['HORAFIN'];
+
+        $result[] = $fila;
+      }
+      break;
+
     default:
       $result['error'] = 'La accion "'.$get['accion'].'" no existe!';
+
       break;
+
   }
 
   return $result;
