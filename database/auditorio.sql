@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.11
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-04-2017 a las 21:03:53
--- Versión del servidor: 5.6.24
--- Versión de PHP: 5.6.8
+-- Tiempo de generación: 28-05-2017 a las 05:43:41
+-- Versión del servidor: 10.1.16-MariaDB
+-- Versión de PHP: 7.0.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `auditorio`
@@ -26,10 +26,10 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `ambiente`
 --
 
-CREATE TABLE IF NOT EXISTS `ambiente` (
+CREATE TABLE `ambiente` (
   `IDAMBIENTE` int(11) NOT NULL,
   `IDFACULTAD` int(11) DEFAULT NULL,
-  `TIPOAMBIENTE` varchar(100) NOT NULL,
+  `idTipoAmb` int(11) NOT NULL,
   `NOMBREAMBIENTE` varchar(100) NOT NULL,
   `DIRECCIONAMBIENTE` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -38,10 +38,14 @@ CREATE TABLE IF NOT EXISTS `ambiente` (
 -- Volcado de datos para la tabla `ambiente`
 --
 
-INSERT INTO `ambiente` (`IDAMBIENTE`, `IDFACULTAD`, `TIPOAMBIENTE`, `NOMBREAMBIENTE`, `DIRECCIONAMBIENTE`) VALUES
-(100, 1000, 'auditorio', 'Auditorio Magno ', 'lado Biblioteca del FCYT'),
-(101, 1000, 'audiorio de  defensas de proyectos de grado', ' sala de defensas ', 'segundo piso edificio MEMI'),
-(102, 1000, 'sala de examenes', 'auditorio del edificio nuevo', 'edificio nuevo fcyt tercer piso ');
+INSERT INTO `ambiente` (`IDAMBIENTE`, `IDFACULTAD`, `idTipoAmb`, `NOMBREAMBIENTE`, `DIRECCIONAMBIENTE`) VALUES
+(1, 1000, 0, 'auditorioaa', 'dir aaa'),
+(100, 1000, 0, 'Auditorio Magno ', 'lado Biblioteca del FCYT'),
+(101, 1000, 0, ' sala de defensas ', 'segundo piso edificio MEMI'),
+(102, 1000, 0, 'auditorio del edificio nuevo', 'edificio nuevo fcyt tercer piso '),
+(103, 1000, 0, 'aula11', 'dafafeaf'),
+(104, 1000, 1, '934', 'makxs'),
+(105, 1000, 1, 'auditorioFCYT', 'asssd');
 
 -- --------------------------------------------------------
 
@@ -49,7 +53,7 @@ INSERT INTO `ambiente` (`IDAMBIENTE`, `IDFACULTAD`, `TIPOAMBIENTE`, `NOMBREAMBIE
 -- Estructura de tabla para la tabla `calendario`
 --
 
-CREATE TABLE IF NOT EXISTS `calendario` (
+CREATE TABLE `calendario` (
   `IDCALENDARIO` int(11) NOT NULL,
   `IDFACULTAD` int(11) DEFAULT NULL,
   `FECHACALENDARIO` date NOT NULL,
@@ -247,7 +251,7 @@ INSERT INTO `calendario` (`IDCALENDARIO`, `IDFACULTAD`, `FECHACALENDARIO`, `DIAC
 -- Estructura de tabla para la tabla `facultad`
 --
 
-CREATE TABLE IF NOT EXISTS `facultad` (
+CREATE TABLE `facultad` (
   `IDFACULTAD` int(11) NOT NULL,
   `NOMBREFACULTAD` varchar(100) NOT NULL,
   `DIRECCIONFACULTAD` varchar(100) NOT NULL,
@@ -267,7 +271,7 @@ INSERT INTO `facultad` (`IDFACULTAD`, `NOMBREFACULTAD`, `DIRECCIONFACULTAD`, `TE
 -- Estructura de tabla para la tabla `reserva`
 --
 
-CREATE TABLE IF NOT EXISTS `reserva` (
+CREATE TABLE `reserva` (
   `IDRESERVA` int(11) NOT NULL,
   `IDUSUARIO` int(11) DEFAULT NULL,
   `IDAMBIENTE` int(11) DEFAULT NULL,
@@ -286,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `reserva` (
 -- Estructura de tabla para la tabla `rol`
 --
 
-CREATE TABLE IF NOT EXISTS `rol` (
+CREATE TABLE `rol` (
   `IDROL` int(11) NOT NULL,
   `TIPOROL` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -298,7 +302,26 @@ CREATE TABLE IF NOT EXISTS `rol` (
 INSERT INTO `rol` (`IDROL`, `TIPOROL`) VALUES
 (1, 'administrador'),
 (2, 'secretaria'),
-(3, 'docente');
+(3, 'docente'),
+(4, 'admin');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipoambiente`
+--
+
+CREATE TABLE `tipoambiente` (
+  `idTipoAmb` int(11) NOT NULL,
+  `tipoAmb` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tipoambiente`
+--
+
+INSERT INTO `tipoambiente` (`idTipoAmb`, `tipoAmb`) VALUES
+(1, 'aula');
 
 -- --------------------------------------------------------
 
@@ -306,7 +329,7 @@ INSERT INTO `rol` (`IDROL`, `TIPOROL`) VALUES
 -- Estructura de tabla para la tabla `usuario`
 --
 
-CREATE TABLE IF NOT EXISTS `usuario` (
+CREATE TABLE `usuario` (
   `IDUSUARIO` int(11) NOT NULL,
   `IDROL` int(11) DEFAULT NULL,
   `CIUSUARIO` int(11) NOT NULL,
@@ -324,13 +347,15 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 -- Indices de la tabla `ambiente`
 --
 ALTER TABLE `ambiente`
-  ADD PRIMARY KEY (`IDAMBIENTE`), ADD KEY `FK_R_1` (`IDFACULTAD`);
+  ADD PRIMARY KEY (`IDAMBIENTE`),
+  ADD KEY `FK_R_1` (`IDFACULTAD`);
 
 --
 -- Indices de la tabla `calendario`
 --
 ALTER TABLE `calendario`
-  ADD PRIMARY KEY (`IDCALENDARIO`), ADD KEY `FK_R_5` (`IDFACULTAD`);
+  ADD PRIMARY KEY (`IDCALENDARIO`),
+  ADD KEY `FK_R_5` (`IDFACULTAD`);
 
 --
 -- Indices de la tabla `facultad`
@@ -342,7 +367,9 @@ ALTER TABLE `facultad`
 -- Indices de la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  ADD PRIMARY KEY (`IDRESERVA`), ADD KEY `FK_R_2` (`IDUSUARIO`), ADD KEY `FK_R_3` (`IDAMBIENTE`);
+  ADD PRIMARY KEY (`IDRESERVA`),
+  ADD KEY `FK_R_2` (`IDUSUARIO`),
+  ADD KEY `FK_R_3` (`IDAMBIENTE`);
 
 --
 -- Indices de la tabla `rol`
@@ -351,20 +378,52 @@ ALTER TABLE `rol`
   ADD PRIMARY KEY (`IDROL`);
 
 --
+-- Indices de la tabla `tipoambiente`
+--
+ALTER TABLE `tipoambiente`
+  ADD PRIMARY KEY (`idTipoAmb`);
+
+--
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`IDUSUARIO`), ADD KEY `FK_RELATIONSHIP_4` (`IDROL`);
+  ADD PRIMARY KEY (`IDUSUARIO`),
+  ADD KEY `FK_RELATIONSHIP_4` (`IDROL`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
+-- AUTO_INCREMENT de la tabla `ambiente`
+--
+ALTER TABLE `ambiente`
+  MODIFY `IDAMBIENTE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+--
+-- AUTO_INCREMENT de la tabla `calendario`
+--
+ALTER TABLE `calendario`
+  MODIFY `IDCALENDARIO` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1177;
+--
+-- AUTO_INCREMENT de la tabla `facultad`
+--
+ALTER TABLE `facultad`
+  MODIFY `IDFACULTAD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001;
+--
 -- AUTO_INCREMENT de la tabla `reserva`
 --
 ALTER TABLE `reserva`
   MODIFY `IDRESERVA` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `rol`
+--
+ALTER TABLE `rol`
+  MODIFY `IDROL` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `tipoambiente`
+--
+ALTER TABLE `tipoambiente`
+  MODIFY `idTipoAmb` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
@@ -378,19 +437,20 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `ambiente`
 --
 ALTER TABLE `ambiente`
-ADD CONSTRAINT `FK_R_1` FOREIGN KEY (`IDFACULTAD`) REFERENCES `facultad` (`IDFACULTAD`);
+  ADD CONSTRAINT `ambiente_ibfk_1` FOREIGN KEY (`IDFACULTAD`) REFERENCES `facultad` (`IDFACULTAD`);
 
 --
--- Filtros para la tabla `calendario`
+-- Filtros para la tabla `reserva`
 --
-ALTER TABLE `calendario`
-ADD CONSTRAINT `FK_R_5` FOREIGN KEY (`IDFACULTAD`) REFERENCES `facultad` (`IDFACULTAD`);
+ALTER TABLE `reserva`
+  ADD CONSTRAINT `reserva_ibfk_1` FOREIGN KEY (`IDUSUARIO`) REFERENCES `usuario` (`IDUSUARIO`),
+  ADD CONSTRAINT `reserva_ibfk_2` FOREIGN KEY (`IDAMBIENTE`) REFERENCES `ambiente` (`IDAMBIENTE`);
 
 --
 -- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
-ADD CONSTRAINT `FK_RELATIONSHIP_4` FOREIGN KEY (`IDROL`) REFERENCES `rol` (`IDROL`);
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`IDROL`) REFERENCES `rol` (`IDROL`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
