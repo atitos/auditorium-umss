@@ -5,6 +5,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="../assets/css/main.css" />
+        <link rel="stylesheet" href="../assets/css/custom.css" />
 
 		<!-- Scripts -->
 		<script src="../assets/js/jquery.min.js"></script>
@@ -13,6 +14,22 @@
 		<script src="../assets/js/skel.min.js"></script>
 		<script src="../assets/js/util.js"></script>
 		<script src="../assets/js/main.js"></script>
+        <script src="../javascript/base.js"></script>
+        <script>
+            $(document).ready(function() {
+
+                $("#formulario").submit(function(jsEvent){
+                    jsEvent.preventDefault();
+
+                    cargarCronograma("http://localhost/auditorium-umss/server/", "#archivo", $('select#facultad').val());
+
+                    $('#formulario')[0].reset();
+                    return false
+                });
+
+                llenarOpciones("http://localhost/auditorium-umss/server/","getOptFacultades","facultad");
+            });
+        </script>
 	</head>
 	<body class="landing">
 		<!-- Page Wrapper -->
@@ -40,14 +57,26 @@
 					<div class="inner">
 						<h2>Registro de calendario</h2>
 						<p>Seleccionar el calendario academico</p>
-					</div>    
-					<form method="post">
-						 <input type="file" class="button" name="archivo" /><br/>
-						 <br/>
-						 <ul class="actions">
-						 	<input type="submit" value="Cargar" class="button special icon fa-download"/>
-						 </ul>
-					</form>
+					</div>
+					<div align="center">
+						<form class="form" id="formulario">
+				            <div class="form-group">
+	                            <label>Facultad</label> 
+								<div class="select-wrapper">
+									<select name="facultad" id="facultad">
+										<option value=0>- Seleccionar Facultad -</option>
+									</select>
+								</div>
+							</div>
+							<br/>
+							<input type="file" id="archivo" class="button" name="archivo" /><br/>
+							<br/>
+							<ul class="actions">
+								<input type="submit" value="Cargar" id="cargar" name="cargar" class="button special icon fa-download"/>
+							</ul>
+						</form>
+					</div>
+
 				</section>			
 			</article>
 

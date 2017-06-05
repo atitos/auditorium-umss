@@ -4,6 +4,7 @@ include 'usuarioSQL.php';
 include 'reservaSql.php';
 include 'facultadSql.php';
 include 'ambienteSql.php';
+include 'excel_reader/PHPExcel.php';
 
 header('Content-Type: application/json');
 
@@ -39,11 +40,9 @@ function runGET ($sqlCon, $get)
         $result[] = $fila;
       }
       break;
-   
     
     case 'getReserva':
-
-     $sqlResults = mostrarReserva($sqlCon, $get['idReserva']);
+      $sqlResults = mostrarReserva($sqlCon, $get['idReserva']);
       foreach ($sqlResults as $sqlResult) {
         $fila['usuario'] = $sqlResult['SOLICITANTE'];
         $fila['titulo'] = $sqlResult['TITULORESERVA'];
@@ -54,6 +53,46 @@ function runGET ($sqlCon, $get)
         $fila['horaFin']=$sqlResult['HORAFIN'];
 
         $result[] = $fila;
+      }
+      break;
+
+    case 'getOptTiposAmbiente':
+      $sqlResults = mostrarOptTiposAmbiente($sqlCon);
+      foreach ($sqlResults as $sqlResult) {
+        $fila['value'] = $sqlResult['IDTIPOAMBIENTE'];
+        $fila['text'] = $sqlResult['TIPOAMBIENTE'];
+
+        $result[] = $fila;
+      }
+      break;
+
+    case 'getOptFacultades':
+      $sqlResults = mostrarOptFacultades($sqlCon);
+      foreach ($sqlResults as $sqlResult) {
+        $fila['value'] = $sqlResult['IDFACULTAD'];
+        $fila['text'] = $sqlResult['NOMBREFACULTAD'];
+
+        $result[] = $fila;
+      }
+      break;
+
+    case 'getOptRoles':
+      $sqlResults = mostrarOptRoles($sqlCon);
+      foreach ($sqlResults as $sqlResult) {
+        $fila['value'] = $sqlResult['IDROL'];
+        $fila['text'] = $sqlResult['TIPOROL'];
+
+        $result[] = $fila;
+      }
+      break;
+
+    case 'obtenerDatosUsuario':
+      $sqlResults = mostrarDatosUsuario($sqlCon, $get['id']);
+      foreach ($sqlResults as $sqlResult) {
+        $fila['nombre'] = $sqlResult['NOMBRE'];
+        $fila['rol'] = $sqlResult['ROL'];
+
+        $result = $fila;
       }
       break;
 
@@ -122,11 +161,89 @@ function runPOST($sqlCon, $post)
         }
         break;
 
+      case 'subirCronograma':
+        if (!empty($_FILES)) {
+          $archivo = $_FILES['archivo'];
+          $nombre = $archivo['name'];
+          $idFacultad = $post['idFacultad'];
+          $directorio = 'cronograma/';
+          if (file_exists($directorio . $nombre)) {
+            $token = date('mdY_his');
+            rename($directorio.$nombre, $directorio.$nombre.'.'.$token);
+          }
+
+          $success = move_uploaded_file($archivo["tmp_name"], $directorio.$nombre);
+
+          if ($success) {
+            procesarCronograma($sqlCon,$idFacultad, $directorio, $nombre);
+          }
+
+          $result['respuesta'] = 'Calendario Cargado!';
+        }
+        break;
+
       default:
          $result['error'] = 'La accion "'.$post['accion'].'" no existe!';
          break;
   }
 
   return $result;
+}
+
+function procesarCronograma($con,$idFc, $dir, $nom)
+{
+  $eventos = array();
+
+  $archivo = $dir.$nom;
+  $objPHPExcel = PHPExcel_IOFactory::load($archivo);
+
+  $sheet = $objPHPExcel->getSheet(0);
+  $highestRow = $sheet->getHighestRow();
+  $highestColumn = $sheet->getHighestColumn();
+  $highestColumnIndex = PHPExcel_Cell::columnIndexFromString($highestColumn);
+  $setEvento = 0;
+  $colFecha = array();
+  $colActiv = array();
+
+  for ($row = 0; $row <= $highestRow; ++ $row) {
+    $evento = array();
+    $fecha = null;
+    $actividad = null;
+    for ($col = 0; $col < $highestColumnIndex; ++ $col) {
+      $cell = $sheet->getCellByColumnAndRow($col, $row);
+      $colVal = $cell->getValue();
+      if ($setEvento == 0 && $colVal === 'Fecha') {
+        $colFecha[] = $col;
+      }
+      elseif ($setEvento == 0 && $colVal === 'Actividad') {
+        $colActiv[] = $col;
+      }
+      elseif ($setEvento > 0 && ($colVal === 'Fecha' || $colVal === 'Actividad')) {
+        # no hacemos nada porque esta celda es una cabecera de columna.
+      }
+      elseif (count($colFecha) > 0 && $col == $colFecha[$setEvento]) {
+        $calcVal = $cell->getCalculatedValue();
+        $fecha = PHPExcel_Style_NumberFormat::toFormattedString($calcVal, 'YYYY-MM-DD');
+        $evento['fecha'] = $fecha;
+      }
+      elseif (count($colActiv) > 0 && $col == $colActiv[$setEvento]) {
+        $actividad = $cell->getCalculatedValue();
+        $evento['actividad'] = $actividad;
+      }
+    }
+
+    if (isset($evento['actividad']) && $evento['actividad'] != null) {
+      $eventos[] = $evento;
+    }
+
+    if ($row == $highestRow && $setEvento < count($colFecha)-1) {
+      $setEvento = $setEvento + 1;
+      $row = -1;
+    }
+  }
+
+  foreach ($eventos as $evento) {
+    insertarEventoCronograma($con, $idFc, $evento['fecha'], $evento['actividad']);
+  }
 }
 ?>

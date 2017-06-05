@@ -7,6 +7,13 @@ function insertarReserva($con,$idusuario,$idambiente,$titulo,$descripcion,$fecha
                             VALUES ($idusuario,$idambiente,'$titulo','$descripcion','$fechainicio','$fechafin','$horainicio','$horafin','$solicitante')");
 }
 
+function insertarEventoCronograma($con,$idFacultad,$fecha,$actividad)
+{
+    mysqli_query($con, "INSERT INTO calendario 
+                                           (IDFACULTAD,FECHACALENDARIO,ACTIVIDAD)
+                               VALUES ($idFacultad,'$fecha','$actividad')");
+}
+
 function actualizarReserva($con,$idreserva,$titulo,$descripcion,$fechainicio,$fechafin,$horainicio,$horafin,$solicitante)
 {
 	mysqli_query($con, "UPDATE reserva
