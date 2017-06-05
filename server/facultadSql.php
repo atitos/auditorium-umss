@@ -24,11 +24,19 @@
 
   }
 
-  function mostrarFacultad($conexion){
+  function mostrarOptFacultades($conexion){
 
-    $selecionar="SELECT IDFACULTAD, NOMBREFACULTAD FROM facultad";
-    $resultado=mysqli_query($conexion,$selecionar);
+    $filas = array();
+    $seleccionar="SELECT IDFACULTAD, NOMBREFACULTAD
+                 FROM facultad";
+
+    $resultado=mysqli_query($conexion,$seleccionar);
+
+    while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+        $filas[] = $fila;
+    }
+
+    return $filas;
   }
-
 
  ?>

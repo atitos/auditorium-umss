@@ -1,8 +1,8 @@
 <?php 
 
-   function insertarAmbiente($conexion,$idFacultad,$tipoAmbiente,$nombreAmbiente,$direccionAmbiente){
+   function insertarAmbiente($conexion,$idFacultad,$idTipoAmbiente,$nombreAmbiente,$direccionAmbiente){
 
-   $insert = "INSERT INTO ambiente(IDFACULTAD,TIPOAMBIENTE,NOMBREAMBIENTE,DIRECCIONAMBIENTE) VALUES($idFacultad,'$tipoAmbiente','$nombreAmbiente','$direccionAmbiente')";
+   $insert = "INSERT INTO ambiente(IDFACULTAD,IDTIPOAMBIENTE,NOMBREAMBIENTE,DIRECCIONAMBIENTE) VALUES($idFacultad,'$idTipoAmbiente','$nombreAmbiente','$direccionAmbiente')";
    $resultado = mysqli_query($conexion, $insert);
 
    }
@@ -16,18 +16,32 @@
   }
 
 
-    function actualizarAmbiente($conexion,$idAmbiente,$idFacultad,$tipoAmbiente,$nombreAmbiente,$direccionAmbiente){
+    function actualizarAmbiente($conexion,$idAmbiente,$idFacultad,$idTipoAmbiente,$nombreAmbiente,$direccionAmbiente){
 
-   $update = "UPDATE ambiente SET IDFACULTAD=$idFacultad, TIPOAMBIENTE=$tipoAmbiente, NOMBREAMBIENTE=$nombreAmbiente, DIRECCIONAMBIENTE=$direccionAmbiente WHERE IDAMBIENTE=$idAmbiente";
+   $update = "UPDATE ambiente SET IDFACULTAD=$idFacultad, IDTIPOAMBIENTE=$idTipoAmbiente, NOMBREAMBIENTE=$nombreAmbiente, DIRECCIONAMBIENTE=$direccionAmbiente WHERE IDAMBIENTE=$idAmbiente";
    $resultado = mysqli_query($conexion, $update);
 
   }
 
   function mostrarAmbiente($conexion){
 
-    $selecionar="SELECT IDAMBIENTE, NOMBREAMBIENTE FROM ambiente";
-    $resultado=mysqli_query($conexion,$selecionar);
+    $seleccionar="SELECT IDAMBIENTE, NOMBREAMBIENTE FROM ambiente";
+    $resultado=mysqli_query($conexion,$seleccionar);
   }
 
+  function mostrarOptTiposAmbiente($conexion){
+
+    $filas = array();
+    $seleccionar="SELECT IDTIPOAMBIENTE, TIPOAMBIENTE
+                 FROM TIPOAMBIENTE";
+
+    $resultado=mysqli_query($conexion,$seleccionar);
+
+    while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+        $filas[] = $fila;
+    }
+
+    return $filas;
+  }
 
  ?>

@@ -29,5 +29,38 @@
     $resultado = mysqli_query($conexion, $update);
   }
 
+  function mostrarDatosUsuario($conexion,$idUsuario){
+
+    $filas = array();
+    $seleccionar="SELECT CONCAT(u.NOMBREUSUARIO,' ',u.PRIMERAPELLIDO,' ',u.SEGUNDOAPELLIDO) AS NOMBRE, r.TIPOROL AS ROL
+                  FROM usuario u, rol r
+                  WHERE u.IDUSUARIO=$idUsuario
+                    AND u.IDROL=r.IDROL";
+
+
+    $resultado=mysqli_query($conexion,$seleccionar);
+
+    while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+        $filas[] = $fila;
+    }
+
+    return $filas;
+  }
+
+  function mostrarOptRoles($conexion){
+
+    $filas = array();
+    $seleccionar="SELECT IDROL, TIPOROL
+                  FROM rol";
+
+
+    $resultado=mysqli_query($conexion,$seleccionar);
+
+    while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+        $filas[] = $fila;
+    }
+
+    return $filas;
+  }
 
  ?>

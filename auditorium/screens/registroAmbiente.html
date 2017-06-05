@@ -5,6 +5,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="../assets/css/main.css" />
+        <link rel="stylesheet" href="../assets/css/custom.css" />
 
         <!-- Scripts -->
         <script src="../assets/js/jquery.min.js"></script>
@@ -21,14 +22,16 @@
                     console.log('submit');
                     jsEvent.preventDefault();
                     enviarConsultaPhp(
-                        "http://localhost/server/",
+                        "http://localhost/auditorium-umss/server/",
                         "registrarAmbiente",
-                        [$('select').val(), $('input#tipoAmb').val(),
+                        [$('select#facultad').val(), $('select#tipoAmbiente').val(),
                          $('input#nomAmb').val(), $('input#dirAmb').val()]);
                     $('#formulario')[0].reset();
                     return false
                 });
 
+                llenarOpciones("http://localhost/auditorium-umss/server/","getOptFacultades","facultad");
+                llenarOpciones("http://localhost/auditorium-umss/server/","getOptTiposAmbiente","tipoAmbiente");
             });
         </script>
     </head>
@@ -68,24 +71,30 @@
                 <form class="form" id="formulario">
                     <fieldset>
                         <legend>FORMULARIO DE REGISTRO DE AMBIENTE</legend>
-			            <label>Facultad</label> 
+                        <br/>
 			            <div class="form-group">
+                            <label>Facultad</label> 
 							<div class="select-wrapper">
-								<select name="cargo" id="cargo">
+								<select name="facultad" id="facultad">
 									<option value=0>- Seleccionar Facultad -</option>
-									<option value=1>FCE</option>
-									<option value=1000>FCYT</option>
 								</select>
 							</div>
 						</div>
+                        <br/>
+                        <div class="form-group">
+                            <label>Tipo Ambiente</label>
+                            <div class="select-wrapper">
+                                <select name="tipoAmbiente" id="tipoAmbiente">
+                                    <option value=0>- Seleccionar Tipo -</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
                         <div class="form-group">
                         	<label>Nombre del Ambiente</label>
                             <input id="nomAmb" name="nomAmb" type="text" placeholder="Nombre del Ambiente" required="" />
                         </div>
-                        <div class="form-group">
-                            <label>Tipo Ambiente</label>
-                            <input id="tipoAmb" name="tipoAmb" type="text" placeholder="Tipo de Ambiente" required="" />
-                        </div>
+                        <br/>
                         <div class="form-group">
                             <label>Direccion Ambiente</label>
                             <input id="dirAmb" name="dirAmb" type="text" placeholder="Direccion del Ambiente" required="" />

@@ -5,6 +5,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="../assets/css/main.css" />
+		<link rel="stylesheet" href="../assets/css/custom.css" />
 
 		<!-- Scripts -->
 		<script src="../assets/js/jquery.min.js"></script>
@@ -21,7 +22,7 @@
 					console.log('submit');
 					jsEvent.preventDefault();
 					enviarConsultaPhp(
-						"http://localhost/server/",
+						"http://localhost/auditorium-umss/server/",
 						"registrarUsuario",
 						[$('select').val(), $('input#ci').val(),
 						 $('input#nombre').val(), $('input#apellidoPaterno').val(),
@@ -30,6 +31,7 @@
 	                return false
 				});
 
+                llenarOpciones("http://localhost/auditorium-umss/server/","getOptRoles","cargo");
 	        });
 		</script>
 	</head>
@@ -96,9 +98,6 @@
 							<div class="select-wrapper">
 								<select name="cargo" id="cargo">
 									<option value=0>- Seleccionar Cargo -</option>
-									<option value=1>Administrador</option>
-									<option value=2>Docente</option>
-									<option value=3>Secretaria</option>
 								</select>
 							</div>
 						</div>

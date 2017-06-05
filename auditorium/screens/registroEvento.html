@@ -34,7 +34,7 @@
                 eventSources: [
 
                     {
-                        url: 'http://localhost/server',
+                        url: 'http://localhost/auditorium-umss/server',
                         type: 'GET',
                         data: {
                             accion: 'getReservas'
@@ -69,7 +69,7 @@
                 eventSources: [
 
                     {
-                        url: 'http://localhost/server',
+                        url: 'http://localhost/auditorium-umss/server',
                         type: 'GET',
                         data: {
                             accion: 'getReservas'
@@ -88,7 +88,7 @@
 			$("#formulario").submit(function(jsEvent){
 				jsEvent.preventDefault();
 				enviarConsultaPhp(
-                    "http://localhost/server/",
+                    "http://localhost/auditorium-umss/server/",
                     "registrarEvento",
                     [4, 100,
                      $('input#titulo').val(), $('input#descripcion').val(),
