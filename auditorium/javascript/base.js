@@ -107,3 +107,40 @@ var cargarCronograma = function(url, idFileInput, idFacultad){
         }
     });
 }
+
+var optenerReserva= function(id,url){
+
+    $.ajax(
+    {
+        type: "GET",
+        url: url,
+        dataType: 'json',
+        data: 
+        {
+          accion: "getReserva",
+          idReserva: id
+        },
+       
+        success: function (obj, textstatus) {
+            alert("success");
+            console.log(obj);
+            var usuario = obj.usuario;
+            var titulo = obj.titulo;
+            var descripcion = obj.descripcion;
+            var fechaInicio = obj.fechaInicio;
+            var fechaFin = obj.fechaFin;
+            var horaInicio = obj.horaInicio;
+            var horaFin = obj.horaFin;
+            $('input#titulo').val(titulo );
+            $('input#descripcion').val(descripcion);
+            $('input#fechaInicio').val(fechaInicio); 
+            $('input#fechaFin').val(fechaFin);
+            $('input#horaInicio').val(moment(fechaInicio+'T'+horaInicio).format('hh:mm')); 
+            $('input#horaFin').val(moment(fechaFin+'T'+horaFin).format('hh:mm'));
+            $('input#usuario').val(usuario);
+        },
+        error: function (req, textoEstado, textoError) {
+            console.log(textoError);
+        }
+    });
+}

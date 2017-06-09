@@ -4,14 +4,14 @@ function insertarReserva($con,$idusuario,$idambiente,$titulo,$descripcion,$fecha
 {
 	mysqli_query($con, "INSERT INTO reserva
                                    (IDUSUARIO,IDAMBIENTE,TITULORESERVA,DESCRIPCIONRESERVA,FECHAINICIO, FECHAFIN,HORAINICIO,HORAFIN,SOLICITANTE)
-                            VALUES ($idusuario,$idambiente,'$titulo','$descripcion','$fechainicio','$fechafin','$horainicio','$horafin','$solicitante')");
+                        VALUES ($idusuario,$idambiente,'$titulo','$descripcion','$fechainicio','$fechafin','$horainicio','$horafin','$solicitante')");
 }
 
 function insertarEventoCronograma($con,$idFacultad,$fecha,$actividad)
 {
     mysqli_query($con, "INSERT INTO calendario 
                                            (IDFACULTAD,FECHACALENDARIO,ACTIVIDAD)
-                               VALUES ($idFacultad,'$fecha','$actividad')");
+                        VALUES ($idFacultad,'$fecha','$actividad')");
 }
 
 function actualizarReserva($con,$idreserva,$titulo,$descripcion,$fechainicio,$fechafin,$horainicio,$horafin,$solicitante)

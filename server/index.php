@@ -52,7 +52,7 @@ function runGET ($sqlCon, $get)
         $fila['horaInicio'] = $sqlResult['HORAINICIO'];
         $fila['horaFin']=$sqlResult['HORAFIN'];
 
-        $result[] = $fila;
+        $result = $fila;
       }
       break;
 

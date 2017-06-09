@@ -31,6 +31,17 @@
                 	});
                 	$('#agenda').fullCalendar('changeView', 'agendaDay', pickedDate);
                 },
+                eventClick: function(objres){
+                    var idres= objres.id;
+                    var start= objres.start;
+                    $.magnificPopup.open({
+                        items:{src:'#formulario'},
+                        type: "inline",
+                        modal: true
+                    });
+                    optenerReserva(idres,'http://localhost/auditorium-umss/server');//al b
+                    $('#agenda').fullCalendar('changeView', 'agendaDay', start);
+                },
                 eventSources: [
 
                     {
