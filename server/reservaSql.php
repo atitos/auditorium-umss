@@ -55,5 +55,32 @@ function mostrarReserva($conexion,$idReserva)
     }
     return $filas;
 }
+function preguntarReserva($conexion, $fechaIncio, $fechaFin)
+{
+   $preguntar = "SELECT COUNT(*) AS CUENTA   FROM reserva WHERE FECHAINICIO BETWEEN  $fechaInicio AND $fechaFin ";
+   $resultado = mysqli_query($conexion,$preguntar);
+   $fila = $resultado->fetch_array(MYSQLI_ASSOC);
+   return $fila;
+
+}
+
+function preguntarReservaHr($conexion,$fecha, $horaInicio, $horaFin)
+{
+
+  //cuenta la cantidad de reservas dada una fecha y un rango de hora
+  $preguntar = "SELECT COUNT(FECHAINICIO) FROM reserva WHERE FECHAINICIO=$fecha AND( HORAINICIO BETWEEN $horaInicio AND $horaFin)";
+  $resultado = mysqli_query($conexion,$preguntar);
+  $fila = $resultado->fetch_array(MYSQLI_ASSOC);
+  return $fila;
+}
+
+function consultaAmbLibre($conexion, $fecha)
+{
+
+  $consulta ="SELECT  NOMBREAMBIENTE FROM ambiente WHERE NOMBREAMBIENTE NOT IN(SELECT ambiente.NOMBREAMBIENTE FROM reserva, ambiente WHERE reserva.IDAMBIENTE = ambiente.IDAMBIENTE AND reserva.FECHAINICIO = $fecha )";
+  $resultado = mysqli_query($conexion,$consulta);
+  $fila = $resultado->fetch_array(MYSQLI_ASSOC);
+  return $fila;
+}
 
 ?>
