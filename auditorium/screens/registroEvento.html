@@ -39,13 +39,13 @@
                         type: "inline",
                         modal: true
                     });
-                    optenerReserva(idres,'http://localhost/auditorium-umss/server');//al b
+                    optenerReserva(idres);//al b
                     $('#agenda').fullCalendar('changeView', 'agendaDay', start);
                 },
                 eventSources: [
 
                     {
-                        url: 'http://localhost/auditorium-umss/server',
+                        url: SERVER_URL,
                         type: 'GET',
                         data: {
                             accion: 'getReservas'
@@ -80,7 +80,7 @@
                 eventSources: [
 
                     {
-                        url: 'http://localhost/auditorium-umss/server',
+                        url: SERVER_URL,
                         type: 'GET',
                         data: {
                             accion: 'getReservas'
@@ -99,7 +99,6 @@
 			$("#formulario").submit(function(jsEvent){
 				jsEvent.preventDefault();
 				enviarConsultaPhp(
-                    "http://localhost/auditorium-umss/server/",
                     "registrarEvento",
                     [4, 100,
                      $('input#titulo').val(), $('input#descripcion').val(),

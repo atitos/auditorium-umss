@@ -21,13 +21,13 @@
                 $("#formulario").submit(function(jsEvent){
                     jsEvent.preventDefault();
 
-                    cargarCronograma("http://localhost/auditorium-umss/server/", "#archivo", $('select#facultad').val());
+                    cargarCronograma("#archivo", $('select#facultad').val());
 
                     $('#formulario')[0].reset();
                     return false
                 });
 
-                llenarOpciones("http://localhost/auditorium-umss/server/","getOptFacultades","facultad");
+                llenarOpciones("getOptFacultades","facultad");
             });
         </script>
 	</head>

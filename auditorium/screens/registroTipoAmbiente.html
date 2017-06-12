@@ -20,7 +20,6 @@
                     console.log('submit');
                     jsEvent.preventDefault();
                     enviarConsultaPhp(
-                        "http://localhost/auditorium-umss/server/",
                         "registrarTipoAmbiente",
                         [$('input#tipo').val()]);
                     $('#formulario')[0].reset();

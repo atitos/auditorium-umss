@@ -1,8 +1,10 @@
-var enviarConsultaPhp = function(url, act, args){
+var SERVER_URL = 'http://localhost/auditorium-umss/server/';
+
+var enviarConsultaPhp = function(act, args){
     $.ajax(
     {
         type: "POST",
-        url: url,
+        url: SERVER_URL,
         dataType: 'json',
         data:
         {
@@ -10,15 +12,15 @@ var enviarConsultaPhp = function(url, act, args){
             parametros: args
         },
         success: function (obj, textstatus) {
-            alert("success");
-                 if( !('error' in obj) )
-                 {
-                    console.log(obj);
-                 }
-                 else
-                 {
-                     console.log(textstatus + ": " +obj.error);
-                 }
+            if( !('error' in obj) )
+            {
+                console.log(obj);
+            }
+            else
+            {
+                console.log(textstatus + ": " +obj.error);
+                alert("success");
+            }
         },
         error: function (req, textoEstado, textoError) {
             console.log(textoError);
@@ -32,11 +34,11 @@ var enviarConsultaPhp = function(url, act, args){
     });
 }
 
-var llenarOpciones = function(url, act, selectId){
+var llenarOpciones = function(act, selectId){
     $.ajax(
     {
         type: "GET",
-        url: url,
+        url: SERVER_URL,
         dataType: 'json',
         data:
         {
@@ -56,11 +58,11 @@ var llenarOpciones = function(url, act, selectId){
     });
 }
 
-var setDatosUsuario = function(url, idUsuario){
+var setDatosUsuario = function(idUsuario){
     $.ajax(
     {
         type: "GET",
-        url: url,
+        url: SERVER_URL,
         dataType: 'json',
         data:
         {
@@ -82,7 +84,7 @@ var setDatosUsuario = function(url, idUsuario){
     });
 }
 
-var cargarCronograma = function(url, idFileInput, idFacultad){
+var cargarCronograma = function(idFileInput, idFacultad){
     var archivo = $(idFileInput)[0].files[0];
     var postData = new FormData();
     postData.append('accion', 'subirCronograma');
@@ -92,7 +94,7 @@ var cargarCronograma = function(url, idFileInput, idFacultad){
     $.ajax(
     {
         type: "POST",
-        url: url,
+        url: SERVER_URL,
         dataType: 'json',
         data: postData,
         cache: false,
@@ -113,7 +115,7 @@ var optenerReserva= function(id,url){
     $.ajax(
     {
         type: "GET",
-        url: url,
+        url: SERVER_URL,
         dataType: 'json',
         data: 
         {

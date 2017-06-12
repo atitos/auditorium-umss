@@ -22,7 +22,6 @@
 					console.log('submit');
 					jsEvent.preventDefault();
 					enviarConsultaPhp(
-						"http://localhost/auditorium-umss/server/",
 						"registrarUsuario",
 						[$('select').val(), $('input#ci').val(),
 						 $('input#nombre').val(), $('input#apellidoPaterno').val(),
@@ -31,7 +30,7 @@
 	                return false
 				});
 
-                llenarOpciones("http://localhost/auditorium-umss/server/","getOptRoles","cargo");
+                llenarOpciones("getOptRoles","cargo");
 	        });
 		</script>
 	</head>

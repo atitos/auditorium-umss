@@ -22,16 +22,15 @@
                     console.log('submit');
                     jsEvent.preventDefault();
                     enviarConsultaPhp(
-                        "http://localhost/auditorium-umss/server/",
                         "registrarAmbiente",
                         [$('select#facultad').val(), $('select#tipoAmbiente').val(),
                          $('input#nomAmb').val(), $('input#dirAmb').val()]);
                     $('#formulario')[0].reset();
-                    return false
+                    return false;
                 });
 
-                llenarOpciones("http://localhost/auditorium-umss/server/","getOptFacultades","facultad");
-                llenarOpciones("http://localhost/auditorium-umss/server/","getOptTiposAmbiente","tipoAmbiente");
+                llenarOpciones("getOptFacultades","facultad");
+                llenarOpciones("getOptTiposAmbiente","tipoAmbiente");
             });
         </script>
     </head>

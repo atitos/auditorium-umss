@@ -21,7 +21,6 @@
                     console.log('submit');
                     jsEvent.preventDefault();
                     enviarConsultaPhp(
-                        "http://localhost/server/",
                         "registrarFacultad",
                         [$('input#nomFc').val(), $('input#dirFc').val(),
                          $('input#telfFc').val()]);
