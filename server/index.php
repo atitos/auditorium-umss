@@ -4,6 +4,8 @@ include 'usuarioSQL.php';
 include 'reservaSql.php';
 include 'facultadSql.php';
 include 'ambienteSql.php';
+include 'rolSql.php';
+include 'tipoAmbienteSql.php';
 include 'excel_reader/PHPExcel.php';
 
 header('Content-Type: application/json');
@@ -158,6 +160,26 @@ function runPOST($sqlCon, $post)
           insertarAmbiente($sqlCon, $post['parametros'][0], $post['parametros'][1],
                                     $post['parametros'][2], $post['parametros'][3]);
           $result['respuesta'] = "Ambiene Registrado";
+        }
+        break;
+
+      case 'registrarTipoAmbiente':
+        if( !is_array($post['parametros']) || (count($post['parametros']) < 1) ) {
+            $result['error'] = 'Error en Parametros!';
+        }
+        else {
+          insertarTipoAmbiente($sqlCon, $post['parametros'][0]);
+          $result['respuesta'] = "Tipo Ambiene Registrado";
+        }
+        break;
+
+      case 'registrarRol':
+        if( !is_array($post['parametros']) || (count($post['parametros']) < 1) ) {
+            $result['error'] = 'Error en Parametros!';
+        }
+        else {
+          insertarRol($sqlCon, $post['parametros'][0]);
+          $result['respuesta'] = "Rol Registrado";
         }
         break;
 
