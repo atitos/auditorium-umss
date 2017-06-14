@@ -63,4 +63,28 @@
     return $filas;
   }
 
+  function validarUsuario($conexion, $ciUsuario, $password){
+    $consulta = "SELECT IDUSUARIO, NOMBREUSUARIO, PRIMERAPELLIDO, SEGUNDOAPELLIDO
+                 FROM usuario
+                 WHERE CIUSUARIO = '$ciUsuario'
+                 AND PASSWORD = '$password'";
+
+    $resultado=mysqli_query($conexion, $consulta);
+    $usrRes = $resultado->fetch_array(MYSQLI_ASSOC);
+    $conteo = count($usrRes);
+
+    if ($conteo > 0) {
+      $fila['esValido'] = true;
+      $fila['usrId'] = $usrRes['IDUSUARIO'];
+      $fila['usrNombre'] = $usrRes['NOMBREUSUARIO'];
+      $fila['usrApellido1'] = $usrRes['PRIMERAPELLIDO'];
+      $fila['usrApellido2'] = $usrRes['SEGUNDOAPELLIDO'];
+    }
+    else {
+      $fila['esValido'] = false;
+    }
+
+    return $fila;
+  }
+
  ?>

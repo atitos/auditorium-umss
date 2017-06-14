@@ -33,7 +33,7 @@
 
     $filas = array();
     $seleccionar="SELECT IDTIPOAMBIENTE, TIPOAMBIENTE
-                 FROM TIPOAMBIENTE";
+                 FROM tipoambiente";
 
     $resultado=mysqli_query($conexion,$seleccionar);
 

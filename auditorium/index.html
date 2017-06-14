@@ -68,21 +68,21 @@
                         <a href="screens/registroUsuario.html" class="button special">Registrate</a>
                     </div>
                     <div id="logForm" class="6u 12u$(medium)">
-                            <form>
+                            <form id="formulario">
                                 <fieldset>
                                     <h2>Ingresar</h2>
                                     <div>
-                                    <label>Usuario</label>
-                                        <input type="text" name="usuario" id="usuario" placeholder="Usuario" required="" />
+                                    <label>Numero CI</label>
+                                        <input type="text" id="ci" name="ci" placeholder="Carnet Identidad" required="" />
                                     </div>
                                     <div>
                                     <label>Password</label>
-                                        <input id="titulo" name="titulo" type="password" placeholder="Password" required="" />
+                                        <input type="password" id="pass" name="pass" placeholder="Password" required="" />
                                     </div>    
 
                                     <br/>
                                     <ul class="actions">
-                                        <input id="submit" name="enviar" type="submit" value="Enviar" class="button special" />
+                                        <input type="submit" id="logging" name="logging" value="Logging" class="button special" />
                                     </ul>
                                 </fieldset>
                             </form>
@@ -128,8 +128,21 @@
         <script src="assets/js/jquery.scrolly.min.js"></script>
         <script src="assets/js/skel.min.js"></script>
         <script src="assets/js/util.js"></script>
-        <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
         <script src="assets/js/main.js"></script>
+        <script src="javascript/base.js"></script>
+        <script>
+            $(document).ready(function() {
+
+                $("#formulario").submit(function(jsEvent){
+                    jsEvent.preventDefault();
+
+                    conectarUsuario($('input#ci').val(), $('input#pass').val());
+
+                    return false
+                });
+
+            });
+        </script>
 
     </body>
 </html>

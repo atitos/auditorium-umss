@@ -1,7 +1,5 @@
 var SERVER_URL = 'http://localhost/auditorium-umss/server/';
-sessionStorage.idUsuario = 4;
 sessionStorage.idAmbiente = 100;
-sessionStorage.nombreUsuario = 'Nombre Completo Usuario';
 
 var enviarConsultaPhp = function(act, args){
     $.ajax(
@@ -148,6 +146,40 @@ var optenerReserva = function(id,url){
             $('input#usuario').val(usuario);
         },
         error: function (req, textoEstado, textoError) {
+            console.log(textoError);
+        }
+    });
+}
+
+var conectarUsuario = function(ciUsr, passUsr)
+{
+    $.ajax(
+    {
+        type: "POST",
+        url: SERVER_URL,
+        dataType: 'json',
+        data: 
+        {
+          accion: "conectarUsuario",
+          ci: ciUsr,
+          pass: passUsr
+        },
+       
+        success: function (obj, textstatus) {
+            if (obj.error) {
+                alert(obj.error);
+            }
+            else {
+                sessionStorage.idUsuario = obj.usrId;
+                sessionStorage.nombreUsuario = obj.usrNombre;
+                sessionStorage.apellido1Usuario = obj.usrApellido1;
+                sessionStorage.apellido2Usuario = obj.usrApellido2;
+                window.location.assign(window.location.href + 'screens/usuario.html');
+            }
+        },
+        error: function (req, textoEstado, textoError) {
+            console.log(req);            
+            console.log(textoEstado);
             console.log(textoError);
         }
     });

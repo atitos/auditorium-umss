@@ -122,7 +122,7 @@ function runPOST($sqlCon, $post)
 
           insertarUsuario($sqlCon, $post['parametros'][0], $post['parametros'][1],
                                   $post['parametros'][2], $post['parametros'][3],
-                                  $post['parametros'][4], $post['parametros'][5]);
+                                  $post['parametros'][4], md5($post['parametros'][5]));
           $result['respuesta'] = 'Usuario Registrado';
         }
         break;
@@ -240,6 +240,17 @@ function runPOST($sqlCon, $post)
           }
 
           $result['respuesta'] = 'Calendario Cargado!';
+        }
+        break;
+
+      case 'conectarUsuario':
+        $resp = validarUsuario($sqlCon, $post['ci'], md5($post['pass']));
+        if ($resp['esValido']) {
+          $result = $resp;
+        }
+        else
+        {
+          $result['error'] = 'Usuario/Password no valido.';
         }
         break;
 
