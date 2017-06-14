@@ -24,23 +24,45 @@
 
             $("#calendar").fullCalendar({
                 dayClick: function(pickedDate, jsEvent, view){
+                    $('#formulario')[0].reset();
+                    $('div#actualizar').hide();
+                    $('input#crear').show();
+
+                    $('input#usuario').val(sessionStorage.nombreUsuario);
+
                 	$.magnificPopup.open({
                 		items:{src:'#formulario'},
                 		type: "inline",
                 		modal: true
                 	});
                 	$('#agenda').fullCalendar('changeView', 'agendaDay', pickedDate);
+                    $('#agenda').fullCalendar('refetchEvents');
                 },
                 eventClick: function(objres){
-                    var idres= objres.id;
-                    var start= objres.start;
-                    $.magnificPopup.open({
-                        items:{src:'#formulario'},
-                        type: "inline",
-                        modal: true
-                    });
-                    optenerReserva(idres);//al b
-                    $('#agenda').fullCalendar('changeView', 'agendaDay', start);
+                    var idres = objres.id;
+                    var start = objres.start;
+                    var idUsr = objres.idUsuario;
+
+                    if (idUsr === sessionStorage.idUsuario)
+                    {
+                        $('input#idReserva').val(idres);
+                        $('div#actualizar').show();
+                        $('input#crear').hide();
+
+                        $.magnificPopup.open({
+                            items:{src:'#formulario'},
+                            type: "inline",
+                            modal: true
+                        });
+                        optenerReserva(idres);
+                        $('#agenda').fullCalendar('changeView', 'agendaDay', start);
+                        $('#agenda').fullCalendar('refetchEvents');
+                    }
+                    else
+                    {
+                        alert('Ud no puede modificar este evento.');
+                    }
+
                 },
                 eventSources: [
 
@@ -98,18 +120,50 @@
 			});
 			$("#formulario").submit(function(jsEvent){
 				jsEvent.preventDefault();
-				enviarConsultaPhp(
-                    "registrarEvento",
-                    [4, 100,
-                     $('input#titulo').val(), $('input#descripcion').val(),
-                     $('input#fechaInicio').val(), $('input#fechaFin').val(),
-                     $('input#horaInicio').val()+':00', $('input#horaFin').val()+':00',
-                     $('input#usuario').val()]);
-                $('#formulario')[0].reset();
-                $.magnificPopup.close();
-                $('#calendar').fullCalendar('refetchEvents');
+                var inicio = moment($('input#fechaInicio').val() + 'T' + $('input#horaInicio').val());
+                var fin = moment($('input#fechaFin').val() + 'T' + $('input#horaFin').val());
+
+                if (!inicio.isBefore(fin))
+                {
+
+                    alert('Fecha y Hora de Inicio debe ser menor a Fecha y Hora de Fin.');
+                    return false;
+                }
+
+                if ($('#formulario').hasClass('crear'))
+                {
+                    enviarConsultaPhp(
+                        "registrarEvento",
+                        [sessionStorage.idUsuario, sessionStorage.idAmbiente,
+                         $('input#titulo').val(), $('input#descripcion').val(),
+                         $('input#fechaInicio').val(), $('input#fechaFin').val(),
+                         $('input#horaInicio').val()+':00', $('input#horaFin').val()+':00',
+                         $('input#usuario').val()]);
+                }
+                else if ($('#formulario').hasClass('actualizar'))
+                {
+                    enviarConsultaPhp(
+                        "actualizarEvento",
+                        [$('input#idReserva').val(),
+                         $('input#titulo').val(), $('input#descripcion').val(),
+                         $('input#fechaInicio').val(), $('input#fechaFin').val(),
+                         $('input#horaInicio').val()+':00', $('input#horaFin').val()+':00',
+                         $('input#usuario').val()]);
+                }
+                else
+                {
+                    enviarConsultaPhp('eliminarEvento', [$('input#idReserva').val()]);
+                }
+				
                 return false
 			});
+            $('input[type=submit]').click(function(){
+                $('#formulario').removeClass('crear');
+                $('#formulario').removeClass('actualizar');
+                $('#formulario').removeClass('eliminar');
+
+                $('#formulario').addClass(this.id);
+            });
         });
         </script>
     </head>
@@ -179,6 +233,9 @@
                 <legend>FORMULARIO DE RESERVA DE HORARIO</legend>
                 <button title="Close (Esc)" type="button" class="mfp-close">×</button>
                 <div>
+
+                <input type="hidden" name="idReserva" id="idReserva">
+
                 <label>Usuario</label>
                     <input type="text" name="usuario" id="usuario" placeholder="Insertar Usuario" required="" />
                 </div>
@@ -211,8 +268,16 @@
 
                 <br/>
                 <ul class="actions">
-                	<input id="submit" name="enviar" type="submit" value="Enviar" class="button special" />
+                	<input id="crear" name="crear" type="submit" value="Crear" class="button special" />
                 </ul>
+                <div id="actualizar" class="row">
+                    <ul class="actions 6u">
+                        <input id="actualizar" name="actualizar" type="submit" value="Actualizar" class="button special" />
+                    </ul>
+                    <ul class="actions 6u">
+                        <input id="eliminar" name="eliminar" type="submit" value="Eliminar" class="button" />
+                    </ul>
+                </div>
                 </fieldset>
 
             </form>

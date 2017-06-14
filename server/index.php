@@ -38,6 +38,7 @@ function runGET ($sqlCon, $get)
         $fila['title'] = $sqlResult['TITULORESERVA'];
         $fila['start'] = $sqlResult['FECHAINICIO'].'T'.$sqlResult['HORAINICIO'];
         $fila['end'] = $sqlResult['FECHAFIN'].'T'.$sqlResult['HORAFIN'];
+        $fila['idUsuario'] = $sqlResult['IDUSUARIO'];
 
         $result[] = $fila;
       }
@@ -131,12 +132,50 @@ function runPOST($sqlCon, $post)
             $result['error'] = 'Error en Parametros!';
         }
         else {
-          insertarReserva($sqlCon, $post['parametros'][0], $post['parametros'][1],
-                                  $post['parametros'][2], $post['parametros'][3],
-                                  $post['parametros'][4], $post['parametros'][5],
-                                  $post['parametros'][6], $post['parametros'][7],
-                                  $post['parametros'][8]);
-          $result['respuesta'] = "Evento Registrado";
+          $conteo = consultaChoqueHoras($sqlCon, $post['parametros'][4], $post['parametros'][5],
+                              $post['parametros'][6], $post['parametros'][7]);
+          if ($conteo['CONTEO'] > 0) {
+            $result['error'] = 'Existen reservas en conflicto. No fue posible guardar su reserva.';
+          }
+          else {
+            insertarReserva($sqlCon, $post['parametros'][0], $post['parametros'][1],
+                            $post['parametros'][2], $post['parametros'][3],
+                            $post['parametros'][4], $post['parametros'][5],
+                            $post['parametros'][6], $post['parametros'][7],
+                            $post['parametros'][8]);
+            $result['respuesta'] = "Evento Registrado";
+          }
+        }
+        break;
+
+      case 'actualizarEvento':
+        if( !is_array($post['parametros']) || (count($post['parametros']) < 1) ) {
+            $result['error'] = 'Error en Parametros!';
+        }
+        else {
+          $conteo = consultaChoqueHoras($sqlCon, $post['parametros'][3], $post['parametros'][4],
+                              $post['parametros'][5], $post['parametros'][6], $post['parametros'][0]);
+          if ($conteo['CONTEO'] > 0) {
+            $result['error'] = 'Existen reservas en conflicto. No fue posible guardar su reserva.';
+          }
+          else {
+            actualizarReserva($sqlCon, $post['parametros'][0],
+                            $post['parametros'][1], $post['parametros'][2],
+                            $post['parametros'][3], $post['parametros'][4],
+                            $post['parametros'][5], $post['parametros'][6],
+                            $post['parametros'][7]);
+            $result['respuesta'] = "Evento Actualizado!";
+          }
+        }
+        break;
+
+      case 'eliminarEvento':
+        if( !is_array($post['parametros']) || (count($post['parametros']) < 1) ) {
+            $result['error'] = 'Error en Parametros!';
+        }
+        else {
+          eliminarReserva($sqlCon, $post['parametros'][0]);
+          $result['respuesta'] = "Evento Eliminado!";
         }
         break;
 
@@ -215,6 +254,8 @@ function runPOST($sqlCon, $post)
 function procesarCronograma($con,$idFc, $dir, $nom)
 {
   $eventos = array();
+
+  eliminarCalendarioFacultad($con, $idFc);
 
   $archivo = $dir.$nom;
   $objPHPExcel = PHPExcel_IOFactory::load($archivo);

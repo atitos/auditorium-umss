@@ -1,4 +1,7 @@
 var SERVER_URL = 'http://localhost/auditorium-umss/server/';
+sessionStorage.idUsuario = 4;
+sessionStorage.idAmbiente = 100;
+sessionStorage.nombreUsuario = 'Nombre Completo Usuario';
 
 var enviarConsultaPhp = function(act, args){
     $.ajax(
@@ -14,22 +17,27 @@ var enviarConsultaPhp = function(act, args){
         success: function (obj, textstatus) {
             if( !('error' in obj) )
             {
+                if (act === 'registrarEvento'
+                    || act === 'actualizarEvento'
+                    || act === 'eliminarEvento')
+                {
+                    $('#formulario')[0].reset();
+                    $.magnificPopup.close();
+                    $('#calendar').fullCalendar('refetchEvents');
+                }
                 console.log(obj);
+                alert("Accion Completada!");
             }
             else
             {
-                console.log(textstatus + ": " +obj.error);
-                alert("success");
+                alert(obj.error);
             }
         },
         error: function (req, textoEstado, textoError) {
             console.log(textoError);
         },
         complete: function (req, textoEstado) {
-            if (act === 'registrarEvento')
-            {
-                $('#calendar').fullCalendar('refetchEvents')
-            }
+            
         }
     });
 }
@@ -101,7 +109,7 @@ var cargarCronograma = function(idFileInput, idFacultad){
         processData: false,
         contentType: false,
         success: function (obj, textstatus) {
-            alert("success");
+            alert("Cronograma Cargado!");
             console.log(obj.respuesta);
         },
         error: function (req, textoEstado, textoError) {
@@ -110,7 +118,7 @@ var cargarCronograma = function(idFileInput, idFacultad){
     });
 }
 
-var optenerReserva= function(id,url){
+var optenerReserva = function(id,url){
 
     $.ajax(
     {
@@ -124,8 +132,6 @@ var optenerReserva= function(id,url){
         },
        
         success: function (obj, textstatus) {
-            alert("success");
-            console.log(obj);
             var usuario = obj.usuario;
             var titulo = obj.titulo;
             var descripcion = obj.descripcion;

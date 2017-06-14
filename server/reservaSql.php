@@ -9,8 +9,7 @@ function insertarReserva($con,$idusuario,$idambiente,$titulo,$descripcion,$fecha
 
 function insertarEventoCronograma($con,$idFacultad,$fecha,$actividad)
 {
-    mysqli_query($con, "INSERT INTO calendario 
-                                           (IDFACULTAD,FECHACALENDARIO,ACTIVIDAD)
+    mysqli_query($con, "INSERT INTO calendario (IDFACULTAD,FECHACALENDARIO,ACTIVIDAD)
                         VALUES ($idFacultad,'$fecha','$actividad')");
 }
 
@@ -30,17 +29,17 @@ function actualizarReserva($con,$idreserva,$titulo,$descripcion,$fechainicio,$fe
 function mostrarReservas($conexion,$fechaInicio,$fechaFin)
 {
 	$filas = array();
-    $selecionar="SELECT IDRESERVA, TITULORESERVA, FECHAINICIO, FECHAFIN, HORAINICIO, HORAFIN
-                 FROM reserva
-                 WHERE (FECHAINICIO BETWEEN '$fechaInicio' AND '$fechaFin')
-                 OR (FECHAFIN BETWEEN '$fechaInicio' AND '$fechaFin')
-                 OR ('$fechaInicio' BETWEEN FECHAINICIO AND FECHAFIN)
-                 OR ('$fechaFin' BETWEEN FECHAINICIO AND FECHAFIN)";
-    $resultado=mysqli_query($conexion,$selecionar);
-    while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
-        $filas[] = $fila;
-    }
-    return $filas;
+  $selecionar="SELECT IDRESERVA, TITULORESERVA, FECHAINICIO, FECHAFIN, HORAINICIO, HORAFIN, IDUSUARIO
+               FROM reserva
+               WHERE (FECHAINICIO BETWEEN '$fechaInicio' AND '$fechaFin')
+               OR (FECHAFIN BETWEEN '$fechaInicio' AND '$fechaFin')
+               OR ('$fechaInicio' BETWEEN FECHAINICIO AND FECHAFIN)
+               OR ('$fechaFin' BETWEEN FECHAINICIO AND FECHAFIN)";
+  $resultado=mysqli_query($conexion,$selecionar);
+  while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+      $filas[] = $fila;
+  }
+  return $filas;
 }
 
 function mostrarReserva($conexion,$idReserva)
@@ -55,20 +54,30 @@ function mostrarReserva($conexion,$idReserva)
     }
     return $filas;
 }
-function preguntarReserva($conexion, $fechaIncio, $fechaFin)
+
+function consultaChoqueFechas($conexion, $fechaInicio, $fechaFin)
 {
-   $preguntar = "SELECT COUNT(*) AS CUENTA   FROM reserva WHERE FECHAINICIO BETWEEN  $fechaInicio AND $fechaFin ";
-   $resultado = mysqli_query($conexion,$preguntar);
-   $fila = $resultado->fetch_array(MYSQLI_ASSOC);
-   return $fila;
+  $preguntar = "SELECT COUNT(*) AS CONTEO
+                FROM reserva
+                WHERE FECHAINICIO BETWEEN  $fechaInicio AND $fechaFin
+                OR FECHAFIN BETWEEN $fechaInicio AND $fechaFin";
+  $resultado = mysqli_query($conexion,$preguntar);
+  $fila = $resultado->fetch_array(MYSQLI_ASSOC);
+  return $fila;
 
 }
 
-function preguntarReservaHr($conexion,$fecha, $horaInicio, $horaFin)
+function consultaChoqueHoras($conexion,$fechaInicio, $fechaFin, $horaInicio, $horaFin, $idReserva = 0)
 {
-
-  //cuenta la cantidad de reservas dada una fecha y un rango de hora
-  $preguntar = "SELECT COUNT(FECHAINICIO) FROM reserva WHERE FECHAINICIO=$fecha AND( HORAINICIO BETWEEN $horaInicio AND $horaFin)";
+  $preguntar = "SELECT COUNT(*) AS CONTEO
+                FROM reserva
+                WHERE IDRESERVA != $idReserva
+                AND (FECHAINICIO BETWEEN  '$fechaInicio' AND '$fechaFin'
+                OR FECHAFIN BETWEEN '$fechaInicio' AND '$fechaFin')
+                AND HORAINICIO < '$horaFin'
+                AND HORAFIN > '$horaInicio'
+                AND (HORAINICIO BETWEEN '$horaInicio' AND '$horaFin'
+                OR HORAFIN BETWEEN '$horaInicio' AND '$horaFin')";
   $resultado = mysqli_query($conexion,$preguntar);
   $fila = $resultado->fetch_array(MYSQLI_ASSOC);
   return $fila;
@@ -81,6 +90,18 @@ function consultaAmbLibre($conexion, $fecha)
   $resultado = mysqli_query($conexion,$consulta);
   $fila = $resultado->fetch_array(MYSQLI_ASSOC);
   return $fila;
+}
+
+function eliminarCalendarioFacultad($conexion, $idFacultad)
+{
+  $consulta = "DELETE FROM calendario WHERE IDFACULTAD = $idFacultad";
+  $resultado = mysqli_query($conexion,$consulta);
+}
+
+function eliminarReserva($conexion, $idReserva)
+{
+  $consulta = "DELETE FROM reserva WHERE IDRESERVA = $idReserva";
+  $resultado = mysqli_query($conexion,$consulta);
 }
 
 ?>
