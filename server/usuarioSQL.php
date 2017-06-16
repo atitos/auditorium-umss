@@ -87,4 +87,13 @@
     return $fila;
   }
 
+  function contarCiUsuario($conexion, $ciUsuario)
+  {
+
+    $consulta ="SELECT COUNT(CIUSUARIO) AS CANTIDAD FROM usuario WHERE IDUSUARIO=$ciUsuario";
+    $resultado=mysqli_query($conexion,$consulta);
+    $resultado->fetch_array(MYSQLI_ASSOC);
+    return $resultado;
+  }
+
  ?>

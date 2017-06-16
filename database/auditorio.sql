@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-05-2017 a las 05:43:41
+-- Tiempo de generación: 16-06-2017 a las 20:40:07
 -- Versión del servidor: 10.1.16-MariaDB
 -- Versión de PHP: 7.0.9
 
@@ -31,9 +31,10 @@ CREATE TABLE `ambiente` (
   `IDFACULTAD` int(11) DEFAULT NULL,
   `IDTIPOAMBIENTE` int(11) NOT NULL,
   `NOMBREAMBIENTE` varchar(100) NOT NULL,
-  `DIRECCIONAMBIENTE` varchar(100) DEFAULT NULL
+  `DIRECCIONAMBIENTE` varchar(100) DEFAULT NULL,
+  `IDUSUARIO` int(11) DEFAULT NULL,
+  `CAPACIDAD` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 -- --------------------------------------------------------
 
@@ -49,7 +50,6 @@ CREATE TABLE `calendario` (
   `SEMANACALENDARIO` int(11) NOT NULL,
   `ACTIVIDAD` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 -- --------------------------------------------------------
 
@@ -106,9 +106,9 @@ CREATE TABLE `rol` (
 --
 
 INSERT INTO `rol` (`IDROL`, `TIPOROL`) VALUES
-(1, 'administrador'),
-(2, 'secretaria'),
-(3, 'docente');
+(1, 'Administrador'),
+(2, 'Secretaria'),
+(3, 'Docente');
 
 -- --------------------------------------------------------
 
@@ -141,7 +141,9 @@ CREATE TABLE `usuario` (
   `NOMBREUSUARIO` varchar(100) NOT NULL,
   `PRIMERAPELLIDO` varchar(100) NOT NULL,
   `SEGUNDOAPELLIDO` varchar(100) NOT NULL,
-  `PASSWORD` varchar(100) NOT NULL
+  `PASSWORD` varchar(100) NOT NULL,
+  `EMAIL` varchar(50) DEFAULT NULL,
+  `ESTADO` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -213,7 +215,7 @@ ALTER TABLE `calendario`
 -- AUTO_INCREMENT de la tabla `facultad`
 --
 ALTER TABLE `facultad`
-  MODIFY `IDFACULTAD` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDFACULTAD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001;
 --
 -- AUTO_INCREMENT de la tabla `reserva`
 --
@@ -223,12 +225,12 @@ ALTER TABLE `reserva`
 -- AUTO_INCREMENT de la tabla `rol`
 --
 ALTER TABLE `rol`
-  MODIFY `IDROL` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDROL` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `tipoambiente`
 --
 ALTER TABLE `tipoambiente`
-  MODIFY `IDTIPOAMBIENTE` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDTIPOAMBIENTE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --

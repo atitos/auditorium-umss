@@ -104,4 +104,14 @@ function eliminarReserva($conexion, $idReserva)
   $resultado = mysqli_query($conexion,$consulta);
 }
 
+function mostrarCalendario($conexion)
+{
+
+   $consulta = "SELECT IDCALENDARIO, FECHACALENDARIO, ACTIVIDAD FROM calendario";
+   $resultado = mysqli_query($conexion,$consulta);
+   $resultado->fetch_array(MYSQLI_ASSOC);
+   return $resultado;
+
+}
+
 ?>
