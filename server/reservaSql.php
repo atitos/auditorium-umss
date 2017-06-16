@@ -72,12 +72,16 @@ function consultaChoqueHoras($conexion,$fechaInicio, $fechaFin, $horaInicio, $ho
   $preguntar = "SELECT COUNT(*) AS CONTEO
                 FROM reserva
                 WHERE IDRESERVA != $idReserva
-                AND (FECHAINICIO BETWEEN  '$fechaInicio' AND '$fechaFin'
-                OR FECHAFIN BETWEEN '$fechaInicio' AND '$fechaFin')
-                AND HORAINICIO < '$horaFin'
-                AND HORAFIN > '$horaInicio'
+                AND ((FECHAINICIO BETWEEN  '$fechaInicio' AND '$fechaFin'
+                OR FECHAFIN BETWEEN '$fechaInicio' AND '$fechaFin'
+                OR '$fechaInicio' BETWEEN FECHAINICIO AND FECHAFIN
+                OR '$fechaFin' BETWEEN FECHAINICIO AND FECHAFIN)
+                AND HORAINICIO != '$horaFin'
+                AND HORAFIN != '$horaInicio'
                 AND (HORAINICIO BETWEEN '$horaInicio' AND '$horaFin'
-                OR HORAFIN BETWEEN '$horaInicio' AND '$horaFin')";
+                OR HORAFIN BETWEEN '$horaInicio' AND '$horaFin'
+                OR '$horaInicio' BETWEEN HORAINICIO AND HORAFIN
+                OR '$horaFin' BETWEEN HORAINICIO AND HORAFIN))";
   $resultado = mysqli_query($conexion,$preguntar);
   $fila = $resultado->fetch_array(MYSQLI_ASSOC);
   return $fila;
