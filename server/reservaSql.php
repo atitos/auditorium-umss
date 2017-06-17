@@ -104,6 +104,7 @@ function eliminarReserva($conexion, $idReserva)
   $resultado = mysqli_query($conexion,$consulta);
 }
 
+
 function mostrarCalendario($conexion)
 {
 
@@ -113,5 +114,15 @@ function mostrarCalendario($conexion)
    return $resultado;
 
 }
+
+function mostrarReservPorAmbiente($conexion,$idambiente)
+{
+  $consulta="SELECT TITULORESERVA FROM reserva WHERE IDAMBIENTE = $idambiente";
+  $resultado=mysqli_query($conexion,$consulta);
+  $resultado->fetch_array(MYSQLI_ASSOC);
+  return $resultado;
+}
+
+
 
 ?>
