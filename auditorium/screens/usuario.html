@@ -19,13 +19,29 @@
         <script src="../assets/js/util.js"></script>
         <script src="../assets/js/main.js"></script>
         <script src="../javascript/base.js"></script>
+        <script src="../assets/js/moment.min.js"></script>
         <script type="text/javascript">
         $(document).ready(function() {
             setDatosUsuario(sessionStorage.idUsuario);
         });
         </script>
+          <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+          <link rel="stylesheet" href="/resources/demos/style.css">
+          <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+          <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+          <script>
+          $( function() {
+            $( "#datepicker" ).datepicker();
+            $( "#datepicker1" ).datepicker();
+            $( "#datepicker2" ).datepicker();
+            $( "#datepicker3" ).datepicker();
+            $( "#datepicker4" ).datepicker();
+        } );
+        </script>
+
     </head>
     <body>
+
         <!-- Page Wrapper -->
         <div id="page-wrapper">
             <!-- Header -->
@@ -37,7 +53,7 @@
                             <a href="#menu" class="menuToggle"><span>Menu</span></a>
                             <div id="menu">
                                 <ul id="menuList">
-                                    <li><a href="../index.html">Inicio</a></li>
+                                    <li><a href="usuario.html">Inicio</a></li>
                                     <li><a href="registroEvento.html">Crear Reserva</a></li>
                                     <li class="admin"><a href="registroFacultad.html">Registro Facultad</a></li>
                                     <li class="admin"><a href="registroAmbiente.html">Registro Ambiente</a></li>
@@ -45,13 +61,15 @@
                                     <li class="admin"><a href="registroTipoRol.html">Registro Rol</a></li>
                                     <li class="admin"><a href="registroCalendario.html">Cargar Calendario Academico</a></li>
                                     <li><a href="vistaCronogramaPDF.html">Calendario Academico</a></li>
-                                    <li><a href="#">Guia Usuario</a></li>
-                                    <li><a href="../index.html">Salir</a></li>
+                                    <li><a href="guiaUsuario.html">Guia Usuario</a></li>
+                                    <li><a href="../">Salir</a></li>
                                 </ul>
                             </div>
                         </li>
                     </ul>
                 </nav>
+
+            
             </header>
 
             <!-- Main -->
@@ -68,64 +86,164 @@
                             <section class="wrapper style2">
 	                            <div class="inner" align="center">
 	                                <section>
-	                                    <div class="row uniform 50%" align="center" >
+	                                    <div align="center" >
 	                                        <div id="info-ambiente" class="3u 12u$(medium)" align="center">
-	                                            <h4>Datos Usuario</h4>
+	                                            <h4 id="nombreUsuario"></h4>
 	                                            <span class="image fit">
 	                                                <img src="../images/default_usr.png" width="300" height="300" class="img-rounded" alt="Responsive image">
-	                                            </span><a href="#"><h6>Editar</h6></a>
+	                                            </span><h6 id="rolUsuario"></h6>
 	                                        </div>
-	                                        <div>
-	                                            <section>
-	                                            <h4>Descripcion</h4>
-	                                            <h5>Detalles</h5>
-	                                            <div class="table-wrapper">
-	                                                <table>
-	                                                    <thead>
-	                                                        <tr>
-	                                                        </tr>
-	                                                    </thead>
-	                                                    <tbody>
-	                                                        <tr>
-	                                                            <td>Usuario: </td>
-	                                                            <td id="nombreUsuario"></td>
-	                                                        </tr>
-	                                                        <tr>
-	                                                            <td>Rol: </td>
-	                                                            <td id="rolUsuario"></td>
-	                                                        </tr>
-	                                                    </tbody>
-	                                                </table>
-	                                            </div>
-	                                            </section>
-	                                        </div>
-	                                    </div>
+	                                        
 	                                </section>
+
 	                            </div>
                             </section>   
-                            <h4 align="center" >Auditorios</h4>
-                            <h5>selecione auditorio</h5>
+                            <h4 align="center" >Busquedas</h4>
+                            <h5>selecione tipo de busqueda</h5>
 
                             <section id="two" class="wrapper alt style2">
 	                            <section class="spotlight">
-	                                <div class="image"><img src="../images/pic01.jpg" width="200" height="200" alt="" /></div><div class="content">
-	                                    <h2> <a href="registroEvento.html"><h6>Auditorio 1</h6></a></h2>
-	                                    <h2> Biblioteca</h2>
-	                                    <p>Ubicada en la parte inferior de la biblioteca</p>
+	                                <div class="image"><img src="../images/calendario.jpg" width="200" height="200" alt="" /></div><div class="content">
+                                        <h2 align="center">POR FECHA</h2>
+	                                    <form>
+
+                                            <div><label><h4>Fecha inicio</h4></label><input type="text" id="datepicker"></div>
+                                            <div><label><h4>Fecha fin</h4></label><input type="text" id="datepicker1"></div>
+                                            <div><label><h4>Hora Inicio</h4></label><input type="text" name="hora" min="06:45" max="21:45" placeholder="06:45"></div> 
+                                            <div><label><h4>Hora Fin</h4></label><input type="text" name="hora" min="06:45" max="21:45" placeholder="22:45"></div>        
+                                            <br/><label><h4 align="center" >Elige los dias<h4/></label>
+                                            <div class="row uniform">
+                                                    <div class="6u 12u$(small)">
+                                                        <input type="checkbox" id="todosFecha" name="todos" checked="">
+                                                        <label for="todosFecha">TODOS</label>
+                                                    </div>
+                                                    <div class="6u 12u$(small)">
+                                                        <input type="checkbox" id="lunesFecha" name="lunes">
+                                                        <label for="lunesFecha">LUNES</label>
+                                                    </div>
+                                                    <div class="6u 12u$(small)">
+                                                        <input type="checkbox" id="martesFecha" name="martes">
+                                                        <label for="martesFecha">MARTES</label>
+                                                    </div>
+                                                    <div class="6u$ 12u$(small)">
+                                                        <input type="checkbox" id="miercolesFecha" name="miercoles">
+                                                        <label for="miercolesFecha">MIERCOLES</label>
+                                                    </div>
+                                                    <div class="6u 12u$(small)">
+                                                        <input type="checkbox" id="juevesFecha" name="jueves">
+                                                        <label for="juevesFecha">JUEVES</label>
+                                                    </div>
+                                                    <div class="6u 12u$(small)">
+                                                        <input type="checkbox" id="viernesFecha" name="viernes">
+                                                        <label for="viernesFecha">VIERNES</label>
+                                                    </div>
+                                                    <div class="6u 12u$(small)">
+                                                        <input type="checkbox" id="sabadoFecha" name="sabado">
+                                                        <label for="sabadoFecha">SABADO</label>
+                                                    </div>
+                                                    <div class="6u 12u$(small)">
+                                                        <input type="checkbox" id="domingoFecha" name="domingo">
+                                                        <label for="domingoFecha">DOMINGO</label>
+                                                    </div>
+                                                </div>    
+                                            <br/>
+                                                <input id="enviar" name="enviar" type="submit" value="Enviar" />
+                                                <!--aqui va el dropdown--> 
+                                                <div class="select-wrapper">
+                                                    <select name="respuesta" id="respuesta">
+                                                    <option value=0>- Seleccionar respuesta -</option>
+                                                    </select>
+                                                </div>    
+                                        </form>
 	                                </div>
 	                            </section>
 	                            <section class="spotlight">
 	                                <div class="image"><img src="../images/pic02.jpg" width="200" height="200" alt="" /></div><div class="content">
-	                                    <h2><a href="registroEvento.html"><h6>Auditorio 2</h6></a></h2>
-	                                    <h2>Aula magna edificio civil</h2>
-	                                    <p>Ubicada en el edificio de ingenieria de civil, ultimo piso.</p>
+	                                    <h2 align="center">POR AMBIENTE</h2>
+                                        <form>
+                                        <div class="12u$">
+                                            <div class="select-wrapper">
+                                                <select name="demo-category" id="demo-category">
+                                                        <option value="">- Seleccione Ambiente -</option>
+                                                        <option value="1">Biblioteca</option>
+                                                        <option value="1">Edificio MEMI</option>
+                                                        <option value="1">Auditorio civil</option>
+                                                </select>    
+                                            </div><br/>
+                                            <div><label><h4>fecha inicio</h4></label><input type="text" id="datepicker2"></div>
+                                            <div><label><h4>fecha fin</h4></label><input type="text" id="datepicker3"></div>
+                                            <div><label><h4>Hora</h4></label><input type="text" name="hora" min="06:45" max="21:45" placeholder="06:45"></div>
+                                            <div><label><h4>Hora Fin</h4></label><input type="text" name="hora" min="06:45" max="21:45" placeholder="22:45"></div> 
+                                            <label><h4 align="center">Elige los dias</h4></label>
+                                            <div class="row uniform">
+                                                <div class="6u 12u$(small)">
+                                                    <input type="checkbox" id="todos" name="todos" checked="">
+                                                    <label for="todos">TODOS</label>
+                                                </div>
+                                                <div class="6u 12u$(small)">
+                                                    <input type="checkbox" id="lunes" name="lunes">
+                                                    <label for="lunes">LUNES</label>
+                                                </div>
+                                                <div class="6u 12u$(small)">
+                                                    <input type="checkbox" id="martes" name="martes">
+                                                    <label for="martes">MARTES</label>
+                                                </div>
+                                                <div class="6u$ 12u$(small)">
+                                                    <input type="checkbox" id="miercoles" name="miercoles">
+                                                    <label for="miercoles">MIERCOLES</label>
+                                                </div>
+                                                <div class="6u 12u$(small)">
+                                                    <input type="checkbox" id="jueves" name="jueves">
+                                                    <label for="jueves">JUEVES</label>
+                                                </div>
+                                                <div class="6u 12u$(small)">
+                                                    <input type="checkbox" id="viernes" name="viernes">
+                                                    <label for="viernes">VIERNES</label>
+                                                </div>
+                                                <div class="6u 12u$(small)">
+                                                    <input type="checkbox" id="sabado" name="sabado">
+                                                    <label for="sabado">SABADO</label>
+                                                </div>
+                                                <div class="6u 12u$(small)">
+                                                    <input type="checkbox" id="domingo" name="domingo">
+                                                    <label for="domingo">DOMINGO</label>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                        </div>
+                                        <input id="enviar2" name="envia" type="submit" value="Enviar" />
+                                        <div class="select-wrapper">
+                                            <select name="respuesta" id="respuesta">
+                                            <option value=0>- Seleccionar respuesta -</option>
+                                            </select>
+                                        </div>
 	                                </div>
+                                    
 	                            </section>
 	                            <section class="spotlight">
 	                                <div class="image"><img src="../images/pic03.jpg" width="200" height="200" alt="" /></div><div class="content">
-	                                    <h2><a href="registroEvento.html"><h6>Auditorio 3</h6></a></h2>
-	                                    <h2>Edificio MEMI</h2>
-	                                    <p>Ubicada en el ultimo piso del edificio de la Memi</p>
+	                                    <h2 align="center">MANUAL</h2>
+                                        <form>
+                                           <div class="12u$">
+                                                <div class="select-wrapper">
+                                                    <select name="demo-category" id="demo-category">
+                                                            <option value="">- Seleccione Ambiente -</option>
+                                                            <option value="1">Biblioteca</option>
+                                                            <option value="1">Edificio MEMI</option>
+                                                            <option value="1">Auditorio civil</option>
+                                                    </select>    
+                                                </div>
+                                                <br/>
+                                                <div><label><h4>fecha</h4></label><input type="text" id="datepicker4"></div>
+                                                <br/>
+                                                <input id="enviar3" name="envi" type="submit" value="Enviar" /> 
+                                                <div class="select-wrapper">
+                                                        <select name="respuesta" id="respuesta">
+                                                            <option value=0>- Seleccionar respuesta -</option>
+                                                        </select>
+                                                </div>
+                                            </div>
+                                        </form>
 	                                </div>
 	                            </section>
                             </section>
@@ -145,5 +263,6 @@
             </footer>
         </div>
 
+      
     </body>
 </html>
