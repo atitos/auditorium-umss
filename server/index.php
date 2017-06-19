@@ -188,6 +188,10 @@ function runPOST($sqlCon, $post)
           insertarUsuario($sqlCon, $post['parametros'][0], $post['parametros'][1],
                                   $post['parametros'][2], $post['parametros'][3],
                                   $post['parametros'][4], md5($post['parametros'][5]));
+
+          $resp = validarUsuario($sqlCon, $post['parametros'][1], md5($post['parametros'][5]));
+          $result = $resp;
+
           $result['respuesta'] = 'Usuario Registrado';
         }
         break;

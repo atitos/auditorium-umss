@@ -26,6 +26,10 @@ var enviarConsultaPhp = function(act, args){
                         $('#calendar').fullCalendar('refetchEvents');
                     }
                 }
+                else if (act == 'registrarUsuario')
+                {
+                    window.location.assign('usuario.html');
+                }
                 /*console.log(obj);
                 alert("Accion Completada!");*/
             }
