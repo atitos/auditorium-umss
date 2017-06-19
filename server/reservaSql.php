@@ -67,11 +67,12 @@ function consultaChoqueFechas($conexion, $fechaInicio, $fechaFin)
 
 }
 
-function consultaChoqueHoras($conexion,$fechaInicio, $fechaFin, $horaInicio, $horaFin, $idReserva = 0)
+function consultaChoqueHoras($conexion,$fechaInicio, $fechaFin, $horaInicio, $horaFin, $idAmbiente, $idReserva = 0)
 {
   $preguntar = "SELECT COUNT(*) AS CONTEO
                 FROM reserva
                 WHERE IDRESERVA != $idReserva
+                AND IDAMBIENTE = $idAmbiente
                 AND ((FECHAINICIO BETWEEN  '$fechaInicio' AND '$fechaFin'
                 OR FECHAFIN BETWEEN '$fechaInicio' AND '$fechaFin'
                 OR '$fechaInicio' BETWEEN FECHAINICIO AND FECHAFIN
@@ -87,13 +88,33 @@ function consultaChoqueHoras($conexion,$fechaInicio, $fechaFin, $horaInicio, $ho
   return $fila;
 }
 
-function consultaAmbLibre($conexion, $fecha)
+function consultaAmbLibre($conexion, $fechaInicio, $fechaFin, $horaInicio, $horaFin, $soloIds)
 {
 
-  $consulta ="SELECT  NOMBREAMBIENTE FROM ambiente WHERE NOMBREAMBIENTE NOT IN(SELECT ambiente.NOMBREAMBIENTE FROM reserva, ambiente WHERE reserva.IDAMBIENTE = ambiente.IDAMBIENTE AND reserva.FECHAINICIO = $fecha )";
+  $consulta ="SELECT  IDAMBIENTE, NOMBREAMBIENTE
+              FROM ambiente
+              WHERE IDAMBIENTE NOT IN(SELECT IDAMBIENTE
+                                      FROM reserva
+                                      WHERE ((FECHAINICIO BETWEEN  '$fechaInicio' AND '$fechaFin'
+                                      OR FECHAFIN BETWEEN '$fechaInicio' AND '$fechaFin'
+                                      OR '$fechaInicio' BETWEEN FECHAINICIO AND FECHAFIN
+                                      OR '$fechaFin' BETWEEN FECHAINICIO AND FECHAFIN)
+                                      AND HORAINICIO != '$horaFin'
+                                      AND HORAFIN != '$horaInicio'
+                                      AND (HORAINICIO BETWEEN '$horaInicio' AND '$horaFin'
+                                      OR HORAFIN BETWEEN '$horaInicio' AND '$horaFin'
+                                      OR '$horaInicio' BETWEEN HORAINICIO AND HORAFIN
+                                      OR '$horaFin' BETWEEN HORAINICIO AND HORAFIN)))";
   $resultado = mysqli_query($conexion,$consulta);
-  $fila = $resultado->fetch_array(MYSQLI_ASSOC);
-  return $fila;
+  while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+    if ($soloIds) {
+      $filas[] = $fila['IDAMBIENTE'];
+    }
+    else {
+      $filas[] = $fila;
+    }
+  }
+  return $filas;
 }
 
 function eliminarCalendarioFacultad($conexion, $idFacultad)

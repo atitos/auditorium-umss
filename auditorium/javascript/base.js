@@ -1,5 +1,4 @@
 var SERVER_URL = 'http://localhost/auditorium-umss/server/';
-sessionStorage.idAmbiente = 100;
 
 var enviarConsultaPhp = function(act, args){
     $.ajax(
@@ -21,10 +20,14 @@ var enviarConsultaPhp = function(act, args){
                 {
                     $('#formulario')[0].reset();
                     $.magnificPopup.close();
-                    $('#calendar').fullCalendar('refetchEvents');
+
+                    if(typeof $.fullCalendar !== 'undefined')
+                    {
+                        $('#calendar').fullCalendar('refetchEvents');
+                    }
                 }
-                console.log(obj);
-                alert("Accion Completada!");
+                /*console.log(obj);
+                alert("Accion Completada!");*/
             }
             else
             {
@@ -32,6 +35,7 @@ var enviarConsultaPhp = function(act, args){
             }
         },
         error: function (req, textoEstado, textoError) {
+            console.log(req);
             console.log(textoError);
         },
         complete: function (req, textoEstado) {
@@ -183,4 +187,76 @@ var conectarUsuario = function(ciUsr, passUsr)
             console.log(textoError);
         }
     });
+}
+
+var obtenerSecuenciaFechas = function(fechaInicio, fechaFin, dias)
+{
+    var secuenciaFechas = Array();
+    var momentInicio = moment(fechaInicio);
+    var momentFin = moment(fechaFin);
+    var momentActual = momentInicio.clone();
+
+    while(momentFin.isSameOrAfter(momentActual))
+    {
+        for (var i = 0; i < dias.length; i++)
+        {
+            var dia = dias[i];
+            var momentAux = momentActual.clone();
+
+            if (momentAux.isoWeekday() <= dia)
+            {
+                momentAux = momentAux.isoWeekday(dia).clone();
+            }
+            else
+            {
+                momentAux = momentAux.add(1, 'weeks').isoWeekday(dia).clone();
+            }
+
+            if (momentFin.isSameOrAfter(momentAux))
+            {
+                secuenciaFechas.push(momentAux.format('YYYY-MM-DD'));
+            }
+        }
+
+        momentActual.add(1, 'weeks');
+    }
+    
+    return secuenciaFechas;
+}
+
+var filtarAmbientePorFechas = function(fechaI, fechaF, horaI, horaF, secuencia, selectId)
+{
+    $.ajax(
+    {
+        type: 'GET',
+        url: SERVER_URL,
+        dataType: 'json',
+        data:
+        {
+            accion: 'filtrarPorFechas',
+            fechaInicio: fechaI,
+            fechaFin:fechaF,
+            horaInicio:horaI,
+            horaFin: horaF,
+            fechas:secuencia
+        },
+       
+        success: function (obj, textstatus) {
+            if (obj.error) {
+                alert(obj.error);
+            }
+            else {
+                for (var i=0; i<obj.length; i++) {
+                    var opt = obj[i];
+                    $('#'+selectId).append($('<option>',opt));
+                }
+                console.log(obj);
+            }
+        },
+        error: function (req, textoEstado, textoError) {
+            console.log(req);            
+            console.log(textoEstado);
+            console.log(textoError);
+        }
+    })
 }

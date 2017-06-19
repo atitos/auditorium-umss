@@ -23,10 +23,17 @@
 
   }
 
-  function mostrarAmbiente($conexion){
+  function mostrarOptAmbientes($conexion){
+    $filas = array();
 
     $seleccionar="SELECT IDAMBIENTE, NOMBREAMBIENTE FROM ambiente";
     $resultado=mysqli_query($conexion,$seleccionar);
+
+    while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+        $filas[] = $fila;
+    }
+
+    return $filas;
   }
 
   function mostrarOptTiposAmbiente($conexion){
@@ -39,6 +46,19 @@
 
     while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
         $filas[] = $fila;
+    }
+
+    return $filas;
+  }
+
+  function obtenerAmbientes($conexion, $idAmbientes){
+    $filas = array();
+    foreach ($idAmbientes as $id) {
+      $seleccionar="SELECT IDAMBIENTE, NOMBREAMBIENTE
+                    FROM ambiente
+                    WHERE IDAMBIENTE=$id";
+      $resultado=mysqli_query($conexion,$seleccionar);
+      $filas[] = $resultado->fetch_array(MYSQLI_ASSOC);
     }
 
     return $filas;

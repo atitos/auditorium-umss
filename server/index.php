@@ -59,6 +59,16 @@ function runGET ($sqlCon, $get)
       }
       break;
 
+    case 'getOptAmbientes':
+      $sqlResults = mostrarOptAmbientes($sqlCon);
+      foreach ($sqlResults as $sqlResult) {
+        $fila['value'] = $sqlResult['IDAMBIENTE'];
+        $fila['text'] = $sqlResult['NOMBREAMBIENTE'];
+
+        $result[] = $fila;
+      }
+      break;
+
     case 'getOptTiposAmbiente':
       $sqlResults = mostrarOptTiposAmbiente($sqlCon);
       foreach ($sqlResults as $sqlResult) {
@@ -99,6 +109,61 @@ function runGET ($sqlCon, $get)
       }
       break;
 
+    case 'filtrarPorFechas':
+      $sqlResults = array();
+      if (isset($get['fechas'])) {
+        foreach ($get['fechas'] as $fecha) {
+          if (count($sqlResults) > 0){
+            $tmpResult = consultaAmbLibre($sqlCon,
+                                           $fecha,
+                                           $fecha,
+                                           $get['horaInicio'],
+                                           $get['horaFin'],
+                                           true);
+            $sqlResults = array_intersect($tmpResult, $sqlResults);
+          }
+          else {
+            $sqlResults = consultaAmbLibre($sqlCon,
+                                           $fecha,
+                                           $fecha,
+                                           $get['horaInicio'],
+                                           $get['horaFin'],
+                                           true);
+          }
+
+          if (count($sqlResults) == 0) {
+            $result['error'] = 'La secuencia tiene conflictos con otras reservas.';
+            break;
+          }
+        }
+
+        if (count($sqlResults) > 0) {
+          $sqlResults = obtenerAmbientes($sqlCon, $sqlResults);
+        }
+      }
+      else {
+        $sqlResults = consultaAmbLibre($sqlCon,
+                                       $get['fechaInicio'],
+                                       $get['fechaFin'],
+                                       $get['horaInicio'],
+                                       $get['horaFin'],
+                                       false);
+
+        if (count($sqlResults) == 0) {
+          $result['error'] = 'La secuencia tiene conflictos con otras reservas.';
+        }
+      }
+
+      if (!(isset($result['error']))) {
+        foreach ($sqlResults as $sqlResult) {
+          $fila['value'] = $sqlResult['IDAMBIENTE'];
+          $fila['text'] = $sqlResult['NOMBREAMBIENTE'];
+
+          $result[] = $fila;
+        }
+      }
+      break;
+
     default:
       $result['error'] = 'La accion "'.$get['accion'].'" no existe!';
 
@@ -133,7 +198,7 @@ function runPOST($sqlCon, $post)
         }
         else {
           $conteo = consultaChoqueHoras($sqlCon, $post['parametros'][4], $post['parametros'][5],
-                              $post['parametros'][6], $post['parametros'][7]);
+                              $post['parametros'][6], $post['parametros'][7], $post['parametros'][1]);
           if ($conteo['CONTEO'] > 0) {
             $result['error'] = 'Existen reservas en conflicto. No fue posible guardar su reserva.';
           }
@@ -154,7 +219,7 @@ function runPOST($sqlCon, $post)
         }
         else {
           $conteo = consultaChoqueHoras($sqlCon, $post['parametros'][3], $post['parametros'][4],
-                              $post['parametros'][5], $post['parametros'][6], $post['parametros'][0]);
+                              $post['parametros'][5], $post['parametros'][6], $post['parametros'][8], $post['parametros'][0]);
           if ($conteo['CONTEO'] > 0) {
             $result['error'] = 'Existen reservas en conflicto. No fue posible guardar su reserva.';
           }

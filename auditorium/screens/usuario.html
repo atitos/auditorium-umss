@@ -9,34 +9,183 @@
         <title>usuario</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="../assets/css/magnific-popup.css" />
         <link rel="stylesheet" href="../assets/css/main.css" />
+        <link rel="stylesheet" href="../assets/css/custom.css" />
 
         <!-- Scripts -->
-        <script src="../assets/js/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="../assets/js/jquery.scrollex.min.js"></script>
         <script src="../assets/js/jquery.scrolly.min.js"></script>
         <script src="../assets/js/skel.min.js"></script>
         <script src="../assets/js/util.js"></script>
         <script src="../assets/js/main.js"></script>
-        <script src="../javascript/base.js"></script>
         <script src="../assets/js/moment.min.js"></script>
+        <script src="../assets/js/magnific-popup.js"></script>
+        <script src="../javascript/base.js"></script>
         <script type="text/javascript">
-        $(document).ready(function() {
-            setDatosUsuario(sessionStorage.idUsuario);
-        });
-        </script>
-          <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-          <link rel="stylesheet" href="/resources/demos/style.css">
-          <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-          <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-          <script>
-          $( function() {
-            $( "#datepicker" ).datepicker();
-            $( "#datepicker1" ).datepicker();
-            $( "#datepicker2" ).datepicker();
-            $( "#datepicker3" ).datepicker();
-            $( "#datepicker4" ).datepicker();
-        } );
+            $(document).ready(function() {
+                setDatosUsuario(sessionStorage.idUsuario);
+                llenarOpciones("getOptAmbientes","ambienteA");
+                llenarOpciones("getOptAmbientes","ambienteM");
+
+                $( "#datepicker" ).datepicker({ dateFormat: 'yy-mm-dd' });
+                $( "#datepicker1" ).datepicker({ dateFormat: 'yy-mm-dd' });
+                $( "#datepicker2" ).datepicker({ dateFormat: 'yy-mm-dd' });
+                $( "#datepicker3" ).datepicker({ dateFormat: 'yy-mm-dd' });
+                $( "#datepicker4" ).datepicker({ dateFormat: 'yy-mm-dd' });
+
+                $('div#diasSemanaF').hide();
+                $('div#diasSemanaA').hide();
+                $('div#divAmbientes').hide();
+
+                $('section#porAmbiente').hide();
+                $('section#manual').hide();
+                $('section#porFecha').hide();
+
+                var tiposBusqueda = $('input[name=tipoBusqueda]');
+                for (var i = tiposBusqueda.length - 1; i >= 0; i--) {
+                    tiposBusqueda[i].onclick = function(){
+                        if (this.value === 'F')
+                        {
+                            $('section#porAmbiente').hide();
+                            $('section#manual').hide();
+                            $('section#porFecha').show();
+                        }
+                        else if (this.value === 'A')
+                        {
+                            $('section#porFecha').hide();
+                            $('section#manual').hide();
+                            $('section#porAmbiente').show();
+                        }
+                        else if (this.value === 'M')
+                        {
+                            $('section#porAmbiente').hide();
+                            $('section#porFecha').hide();
+                            $('section#manual').show();
+                        }
+                    };
+                }
+
+                $('input#todosF')[0].onchange = function(){
+                    if (this.checked)
+                    {
+                        $('div#diasSemanaF').hide();
+                    }
+                    else
+                    {
+                        $('div#diasSemanaF').show();
+                    }
+                }
+
+                $('input#todosA')[0].onchange = function(){
+                    if (this.checked)
+                    {
+                        $('div#diasSemanaA').hide();
+                    }
+                    else
+                    {
+                        $('div#diasSemanaA').show();
+                    }
+                }
+
+                $('#formFechas').submit(function(jsEvent){
+                    jsEvent.preventDefault();
+                    var diasSem = Array();
+                    var fechas = Array();
+
+                    $('#ambienteF').find("option[value!='0']").remove();
+
+                    var checkedBoxes = $('div#diasSemanaF>div>input:checked');
+                    checkedBoxes.each(function(){
+                        diasSem.push(parseInt(this.getAttribute('value')));
+                    });
+
+                    var fechaIni = $('input#datepicker').val();
+                    var fechaFin = $('input#datepicker1').val();
+
+                    if (!($('#todosF')[0].checked))
+                    {
+                        fechas = obtenerSecuenciaFechas(fechaIni, fechaFin, diasSem);
+                    }
+
+                    filtarAmbientePorFechas(
+                        fechaIni,
+                        fechaFin,
+                        $('#horaInicioF').val()+':00',
+                        $('#horaFinF').val()+':00',
+                        fechas,
+                        'ambienteF');
+
+                    $('div#divAmbientes').show();
+
+                    return false
+                });
+
+                $('#crearF').click(function(){
+
+                    $('#formulario')[0].reset();
+                    sessionStorage.idAmbiente = $('select#ambienteF').val();
+                    $('input#usuario').val(sessionStorage.nombreUsuario);
+
+                    $.magnificPopup.open({
+                        items:{src:'#formulario'},
+                        type: "inline",
+                        modal: true
+                    });
+                });
+
+                $('#formulario').submit(function(jsEvent){
+                    jsEvent.preventDefault();
+                    var diasSem = Array();
+                    var fechas = Array();
+
+                    var fechaIni = $('input#datepicker').val();
+                    var fechaFin = $('input#datepicker1').val();
+                    var horaIni = $('input#horaInicioF').val()+':00';
+                    var horaFin = $('input#horaFinF').val()+':00';
+
+                    var checkedBoxes = $('div#diasSemanaF>div>input:checked');
+                    checkedBoxes.each(function(){
+                        diasSem.push(parseInt(this.getAttribute('value')));
+                    });
+
+                    if (!($('#todosF')[0].checked))
+                    {
+                        fechas = obtenerSecuenciaFechas(fechaIni, fechaFin, diasSem);
+                    }
+                    else {
+                        var momIni = moment(fechaIni);
+                        var momFin = moment(fechaFin);
+
+                        while(momFin.isSameOrAfter(momIni))
+                        {
+                            fechas.push(momIni.format('YYYY-MM-DD'));
+                            momIni.add(1, 'days');
+                        }
+                    }
+                    
+                    for (var i = 0; i < fechas.length; i++) {
+                        enviarConsultaPhp(
+                            "registrarEvento",
+                            [sessionStorage.idUsuario, sessionStorage.idAmbiente,
+                             $('input#titulo').val(), $('input#descripcion').val(),
+                             fechas[i], fechas[i],
+                             horaIni, horaFin,
+                             $('input#usuario').val()]);
+                    }
+                })
+
+                $('#formManual').submit(function(jsEvent){
+                    jsEvent.preventDefault();
+                    sessionStorage.idAmbiente = $('#ambienteM').val();
+                    sessionStorage.fechaElegida =  $('#datepicker4').val();
+                    window.location.assign('registroEvento.html');
+                    return false;
+                });
+            });
         </script>
 
     </head>
@@ -100,148 +249,206 @@
                             </section>   
                             <h4 align="center" >Busquedas</h4>
                             <h5>selecione tipo de busqueda</h5>
+                            <div class="row">
+                                <div class="4u 12u$(small)">
+                                    <input type="radio" id="fecha" name="tipoBusqueda" value="F" />
+                                    <label for="fecha">Por Fecha</label>
+                                </div>
+                                <div class="4u 12u$(small)">
+                                    <input type="radio" id="ambiente" name="tipoBusqueda" value="A" />
+                                    <label for="ambiente">Por Ambiente</label>
+                                </div>
+                                <div class="4u 12u$(small)">
+                                    <input type="radio" id="manual" name="tipoBusqueda" value="M" />
+                                    <label for="manual">Manual</label>
+                                </div>
+                            </div>
 
                             <section id="two" class="wrapper alt style2">
-	                            <section class="spotlight">
-	                                <div class="image"><img src="../images/calendario.jpg" width="200" height="200" alt="" /></div><div class="content">
+	                            <section id="porFecha" class="spotlight">
+	                                <div class="image"><img src="../images/calendario.jpg" width="200" height="200" alt="" /></div>
+                                    <div class="content">
                                         <h2 align="center">POR FECHA</h2>
-	                                    <form>
-
-                                            <div><label><h4>Fecha inicio</h4></label><input type="text" id="datepicker"></div>
-                                            <div><label><h4>Fecha fin</h4></label><input type="text" id="datepicker1"></div>
-                                            <div><label><h4>Hora Inicio</h4></label><input type="text" name="hora" min="06:45" max="21:45" placeholder="06:45"></div> 
-                                            <div><label><h4>Hora Fin</h4></label><input type="text" name="hora" min="06:45" max="21:45" placeholder="22:45"></div>        
-                                            <br/><label><h4 align="center" >Elige los dias<h4/></label>
-                                            <div class="row uniform">
-                                                    <div class="6u 12u$(small)">
-                                                        <input type="checkbox" id="todosFecha" name="todos" checked="">
-                                                        <label for="todosFecha">TODOS</label>
-                                                    </div>
-                                                    <div class="6u 12u$(small)">
-                                                        <input type="checkbox" id="lunesFecha" name="lunes">
-                                                        <label for="lunesFecha">LUNES</label>
-                                                    </div>
-                                                    <div class="6u 12u$(small)">
-                                                        <input type="checkbox" id="martesFecha" name="martes">
-                                                        <label for="martesFecha">MARTES</label>
-                                                    </div>
-                                                    <div class="6u$ 12u$(small)">
-                                                        <input type="checkbox" id="miercolesFecha" name="miercoles">
-                                                        <label for="miercolesFecha">MIERCOLES</label>
-                                                    </div>
-                                                    <div class="6u 12u$(small)">
-                                                        <input type="checkbox" id="juevesFecha" name="jueves">
-                                                        <label for="juevesFecha">JUEVES</label>
-                                                    </div>
-                                                    <div class="6u 12u$(small)">
-                                                        <input type="checkbox" id="viernesFecha" name="viernes">
-                                                        <label for="viernesFecha">VIERNES</label>
-                                                    </div>
-                                                    <div class="6u 12u$(small)">
-                                                        <input type="checkbox" id="sabadoFecha" name="sabado">
-                                                        <label for="sabadoFecha">SABADO</label>
-                                                    </div>
-                                                    <div class="6u 12u$(small)">
-                                                        <input type="checkbox" id="domingoFecha" name="domingo">
-                                                        <label for="domingoFecha">DOMINGO</label>
-                                                    </div>
-                                                </div>    
+	                                    <form id="formFechas">
+                                            <div>
+                                                <label>
+                                                    <h4>Fecha inicio</h4>
+                                                </label>
+                                                <input type="text" id="datepicker" required="">
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <h4>Fecha fin</h4>
+                                                </label>
+                                                <input type="text" id="datepicker1" required="">
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <h4>Hora Inicio</h4>
+                                                </label>
+                                                <input type="text" id="horaInicioF" name="horaInicioF" placeholder="Hora Inicio" required="">
+                                            </div> 
+                                            <div>
+                                                <label>
+                                                    <h4>Hora Fin</h4>
+                                                </label>
+                                                <input type="text" id="horaFinF" name="horaFinF" placeholder="Hora Fin" required="">
+                                            </div>
                                             <br/>
-                                                <input id="enviar" name="enviar" type="submit" value="Enviar" />
-                                                <!--aqui va el dropdown--> 
-                                                <div class="select-wrapper">
-                                                    <select name="respuesta" id="respuesta">
-                                                    <option value=0>- Seleccionar respuesta -</option>
-                                                    </select>
-                                                </div>    
-                                        </form>
-	                                </div>
-	                            </section>
-	                            <section class="spotlight">
-	                                <div class="image"><img src="../images/pic02.jpg" width="200" height="200" alt="" /></div><div class="content">
-	                                    <h2 align="center">POR AMBIENTE</h2>
-                                        <form>
-                                        <div class="12u$">
-                                            <div class="select-wrapper">
-                                                <select name="demo-category" id="demo-category">
-                                                        <option value="">- Seleccione Ambiente -</option>
-                                                        <option value="1">Biblioteca</option>
-                                                        <option value="1">Edificio MEMI</option>
-                                                        <option value="1">Auditorio civil</option>
-                                                </select>    
-                                            </div><br/>
-                                            <div><label><h4>fecha inicio</h4></label><input type="text" id="datepicker2"></div>
-                                            <div><label><h4>fecha fin</h4></label><input type="text" id="datepicker3"></div>
-                                            <div><label><h4>Hora</h4></label><input type="text" name="hora" min="06:45" max="21:45" placeholder="06:45"></div>
-                                            <div><label><h4>Hora Fin</h4></label><input type="text" name="hora" min="06:45" max="21:45" placeholder="22:45"></div> 
-                                            <label><h4 align="center">Elige los dias</h4></label>
-                                            <div class="row uniform">
-                                                <div class="6u 12u$(small)">
-                                                    <input type="checkbox" id="todos" name="todos" checked="">
-                                                    <label for="todos">TODOS</label>
+                                            <label>
+                                                <h4 align="center">Elige los dias</h4>
+                                            </label>
+                                            <div>
+                                                <input type="checkbox" id="todosF" name="todosF" checked="true" />
+                                                <label for="todosF">TODOS</label>
+                                            </div>
+                                            <div id="diasSemanaF" class="row">
+                                                <div class="3u 6u(small)">
+                                                    <input type="checkbox" id="lunesF" name="lunesF" value=1 />
+                                                    <label for="lunesF">LUN</label>
                                                 </div>
-                                                <div class="6u 12u$(small)">
-                                                    <input type="checkbox" id="lunes" name="lunes">
-                                                    <label for="lunes">LUNES</label>
+                                                <div class="3u 6u$(small)">
+                                                    <input type="checkbox" id="martesF" name="martesF" value=2 />
+                                                    <label for="martesF">MAR</label>
                                                 </div>
-                                                <div class="6u 12u$(small)">
-                                                    <input type="checkbox" id="martes" name="martes">
-                                                    <label for="martes">MARTES</label>
+                                                <div class="3u 6u(small)">
+                                                    <input type="checkbox" id="miercolesF" name="miercolesF" value=3 />
+                                                    <label for="miercolesF">MIE</label>
                                                 </div>
-                                                <div class="6u$ 12u$(small)">
-                                                    <input type="checkbox" id="miercoles" name="miercoles">
-                                                    <label for="miercoles">MIERCOLES</label>
+                                                <div class="3u$ 6u$(small)">
+                                                    <input type="checkbox" id="juevesF" name="juevesF" value=4 />
+                                                    <label for="juevesF">JUE</label>
                                                 </div>
-                                                <div class="6u 12u$(small)">
-                                                    <input type="checkbox" id="jueves" name="jueves">
-                                                    <label for="jueves">JUEVES</label>
+                                                <div class="4u 6u(small)">
+                                                    <input type="checkbox" id="viernesF" name="viernesF" value=5 />
+                                                    <label for="viernesF">VIE</label>
                                                 </div>
-                                                <div class="6u 12u$(small)">
-                                                    <input type="checkbox" id="viernes" name="viernes">
-                                                    <label for="viernes">VIERNES</label>
+                                                <div class="4u 6u$(small)">
+                                                    <input type="checkbox" id="sabadoF" name="sabadoF" value=6 />
+                                                    <label for="sabadoF">SAB</label>
                                                 </div>
-                                                <div class="6u 12u$(small)">
-                                                    <input type="checkbox" id="sabado" name="sabado">
-                                                    <label for="sabado">SABADO</label>
-                                                </div>
-                                                <div class="6u 12u$(small)">
-                                                    <input type="checkbox" id="domingo" name="domingo">
-                                                    <label for="domingo">DOMINGO</label>
+                                                <div class="4u$ 6u$(small)">
+                                                    <input type="checkbox" id="domingoF" name="domingoF" value=7 />
+                                                    <label for="domingoF">DOM</label>
                                                 </div>
                                             </div>
                                             <br/>
-                                        </div>
-                                        <input id="enviar2" name="envia" type="submit" value="Enviar" />
-                                        <div class="select-wrapper">
-                                            <select name="respuesta" id="respuesta">
-                                            <option value=0>- Seleccionar respuesta -</option>
-                                            </select>
-                                        </div>
-	                                </div>
-                                    
-	                            </section>
-	                            <section class="spotlight">
-	                                <div class="image"><img src="../images/pic03.jpg" width="200" height="200" alt="" /></div><div class="content">
-	                                    <h2 align="center">MANUAL</h2>
-                                        <form>
-                                           <div class="12u$">
+                                            <div>
+                                                <input id="enviar" name="enviar" type="submit" value="Enviar" />
+                                            </div>
+                                            <br/>
+                                            <div id="divAmbientes">
+                                                <label>
+                                                    <h4>Ambientes Disponibles</h4>
+                                                </label>
                                                 <div class="select-wrapper">
-                                                    <select name="demo-category" id="demo-category">
-                                                            <option value="">- Seleccione Ambiente -</option>
-                                                            <option value="1">Biblioteca</option>
-                                                            <option value="1">Edificio MEMI</option>
-                                                            <option value="1">Auditorio civil</option>
+                                                    <select name="ambienteF" id="ambienteF">
+                                                        <option value=0>- Seleccionar Ambiente -</option>
+                                                    </select>
+                                                </div>
+                                                <br/>
+                                                <div>
+                                                    <a id="crearF" class="button special icon"> Crear </a>
+                                                </div>
+                                            </div>    
+                                        </form>
+	                                </div>
+	                            </section>
+	                            <section id="porAmbiente" class="spotlight">
+	                                <div class="image"><img src="../images/pic02.jpg" width="200" height="200" alt="" ></div>
+                                    <div class="content">
+	                                    <h2 align="center">POR AMBIENTE</h2>
+                                        <form id="formAmbiente">
+                                            <div class="12u$">
+                                                <div class="select-wrapper">
+                                                    <select name="ambienteA" id="ambienteA">
+                                                            <option value=0>- Seleccione Ambiente -</option>
                                                     </select>    
                                                 </div>
                                                 <br/>
-                                                <div><label><h4>fecha</h4></label><input type="text" id="datepicker4"></div>
-                                                <br/>
-                                                <input id="enviar3" name="envi" type="submit" value="Enviar" /> 
-                                                <div class="select-wrapper">
-                                                        <select name="respuesta" id="respuesta">
-                                                            <option value=0>- Seleccionar respuesta -</option>
-                                                        </select>
+                                                <div>
+                                                    <label>
+                                                        <h4>fecha inicio</h4>
+                                                    </label>
+                                                    <input type="text" id="datepicker2">
                                                 </div>
+                                                <div>
+                                                    <label>
+                                                        <h4>fecha fin</h4>
+                                                    </label>
+                                                    <input type="text" id="datepicker3">
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <h4>Hora</h4>
+                                                    </label>
+                                                    <input type="text" id="horaInicioA" name="horaInicioA" placeholder="Hora Inicio">
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <h4>Hora Fin</h4>
+                                                    </label>
+                                                    <input type="text" id="horaFinA" name="horaFinA" placeholder="Hora Fin">
+                                                </div> 
+                                                <label><h4 align="center">Elige los dias</h4></label>
+                                                <div>
+                                                    <input type="checkbox" id="todosA" name="todosA" checked="true" />
+                                                    <label for="todosA">TODOS</label>
+                                                </div>
+                                                <div id="diasSemanaA" class="row 12u">
+                                                    <div class="3u 6u(small)">
+                                                        <input type="checkbox" id="lunesA" name="lunesA" value=1 />
+                                                        <label for="lunesA">LUN</label>
+                                                    </div>
+                                                    <div class="3u 6u$(small)">
+                                                        <input type="checkbox" id="martesA" name="martesA" value=2 />
+                                                        <label for="martesA">MAR</label>
+                                                    </div>
+                                                    <div class="3u 6u(small)">
+                                                        <input type="checkbox" id="miercolesA" name="miercolesA" value=3 />
+                                                        <label for="miercolesA">MIE</label>
+                                                    </div>
+                                                    <div class="3u$ 6u$(small)">
+                                                        <input type="checkbox" id="juevesA" name="juevesA" value=4 />
+                                                        <label for="juevesA">JUE</label>
+                                                    </div>
+                                                    <div class="4u 6u(small)">
+                                                        <input type="checkbox" id="viernesA" name="viernesA" value=5 />
+                                                        <label for="viernesA">VIE</label>
+                                                    </div>
+                                                    <div class="4u 6u$(small)">
+                                                        <input type="checkbox" id="sabadoA" name="sabadoA" value=6 />
+                                                        <label for="sabadoA">SAB</label>
+                                                    </div>
+                                                    <div class="4u$ 6u$(small)">
+                                                        <input type="checkbox" id="domingoA" name="domingoA" value=7 />
+                                                        <label for="domingoA">DOM</label>
+                                                    </div>
+                                                </div>
+                                                <br/>
+                                                <input id="enviar2" name="enviar2" type="submit" value="Enviar" />
+                                            </div>
+                                        </form>
+	                                </div>
+                                    
+	                            </section>
+	                            <section id="manual" class="spotlight">
+	                                <div class="image">
+                                        <img src="../images/pic03.jpg" width="200" height="200" alt=""/>
+                                    </div>
+                                    <div class="content">
+	                                    <h2 align="center">MANUAL</h2>
+                                        <form id="formManual">
+                                           <div class="12u$">
+                                                <div class="select-wrapper">
+                                                    <select name="ambienteM" id="ambienteM">
+                                                            <option value=0>- Seleccione Ambiente -</option>
+                                                    </select>    
+                                                </div>
+                                                <br/>
+                                                <div><label><h4>fecha</h4></label><input type="text" id="datepicker4" /></div>
+                                                <br/>
+                                                <input id="enviar3" name="enviar3" type="submit" value="Enviar" /> 
                                             </div>
                                         </form>
 	                                </div>
@@ -263,6 +470,33 @@
             </footer>
         </div>
 
-      
+        <form id="formulario" class="white-popup-block mfp-hide 6u 12u$(medium)" >
+            <fieldset>
+            <legend>FORMULARIO DE RESERVA</legend>
+            <button title="Close (Esc)" type="button" class="mfp-close">×</button>
+            <div>
+
+            <input type="hidden" name="idReserva" id="idReserva">
+
+            <label>Usuario</label>
+                <input type="text" name="usuario" id="usuario" placeholder="Insertar Usuario" required="" />
+            </div>
+            <div>
+            <label>Titulo</label>
+                <input id="titulo" name="titulo" type="text" placeholder="Insertar Titulo" required="" />
+            </div>    
+            <div>
+            <label>Descripcion</label>
+                <input id="descripcion" name="descripcion" type="text" placeholder="Insertar Descripcion" required=""/>
+            </div>
+
+            <br/>
+
+            <ul class="actions">
+                <input id="crear" name="crear" type="submit" value="Crear" class="button special" />
+            </ul>
+            </fieldset>
+
+        </form>
     </body>
 </html>

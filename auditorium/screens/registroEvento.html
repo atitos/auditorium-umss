@@ -90,12 +90,12 @@
 
 					if (horaInicio.is(':focus'))
 					{
-						$("input#horaInicio").val(date.format("hh:mm"));
+						$("input#horaInicio").val(date.format("HH:mm"));
                         $("input#fechaInicio").val(date.format("YYYY-MM-DD"));
 					}
 					else if (horaFin.is(':focus'))
                     {
-						$("input#horaFin").val(date.format("hh:mm"));
+						$("input#horaFin").val(date.format("HH:mm"));
                         $("input#fechaFin").val(date.format("YYYY-MM-DD"));
 					}
 				},
@@ -148,7 +148,7 @@
                          $('input#titulo').val(), $('input#descripcion').val(),
                          $('input#fechaInicio').val(), $('input#fechaFin').val(),
                          $('input#horaInicio').val()+':00', $('input#horaFin').val()+':00',
-                         $('input#usuario').val()]);
+                         $('input#usuario').val()], sessionStorage.idAmbiente);
                 }
                 else
                 {
@@ -164,6 +164,7 @@
 
                 $('#formulario').addClass(this.id);
             });
+            $("#calendar").fullCalendar('gotoDate', moment(sessionStorage.fechaElegida));
         });
         </script>
     </head>
