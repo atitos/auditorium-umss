@@ -197,7 +197,7 @@ function runPOST($sqlCon, $post)
         }
         else {
           insertarAmbiente($sqlCon, $post['parametros'][0], $post['parametros'][1],
-                                    $post['parametros'][2], $post['parametros'][3]);
+                                    $post['parametros'][2], $post['parametros'][3],$post['parametros'][4]);
           $result['respuesta'] = "Ambiene Registrado";
         }
         break;

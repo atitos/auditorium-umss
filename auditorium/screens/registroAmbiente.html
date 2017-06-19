@@ -16,6 +16,7 @@
         <script src="../assets/js/main.js"></script>
         <script src="../javascript/base.js"></script>
         <script>
+            
             $(document).ready(function() {
 
                 $("#formulario").submit(function(jsEvent){
@@ -24,7 +25,8 @@
                     enviarConsultaPhp(
                         "registrarAmbiente",
                         [$('select#facultad').val(), $('select#tipoAmbiente').val(),
-                         $('input#nomAmb').val(), $('input#dirAmb').val()]);
+                         $('input#nomAmb').val(), $('input#dirAmb').val(),sessionStorage.idUsuario]);
+                    
                     $('#formulario')[0].reset();
                     return false;
                 });
