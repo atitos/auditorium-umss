@@ -28,6 +28,10 @@ var enviarConsultaPhp = function(act, args){
                 }
                 else if (act == 'registrarUsuario')
                 {
+                    sessionStorage.idUsuario = obj.usrId;
+                    sessionStorage.nombreUsuario = obj.usrNombre;
+                    sessionStorage.apellido1Usuario = obj.usrApellido1;
+                    sessionStorage.apellido2Usuario = obj.usrApellido2;
                     window.location.assign('usuario.html');
                 }
                 /*console.log(obj);
