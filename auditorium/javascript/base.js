@@ -258,6 +258,7 @@ var filtarAmbientePorFechas = function(fechaI, fechaF, horaI, horaF, secuencia, 
                     var opt = obj[i];
                     $('#'+selectId).append($('<option>',opt));
                 }
+                $('div#divAmbientes').show();
                 console.log(obj);
             }
         },

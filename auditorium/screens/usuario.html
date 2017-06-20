@@ -31,6 +31,8 @@
                 llenarOpciones("getOptAmbientes","ambienteA");
                 llenarOpciones("getOptAmbientes","ambienteM");
 
+                $('input[type=radio]#ambiente').parent().hide();
+
                 $( "#datepicker" ).datepicker({ dateFormat: 'yy-mm-dd' });
                 $( "#datepicker1" ).datepicker({ dateFormat: 'yy-mm-dd' });
                 $( "#datepicker2" ).datepicker({ dateFormat: 'yy-mm-dd' });
