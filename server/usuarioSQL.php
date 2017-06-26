@@ -87,13 +87,20 @@
     return $fila;
   }
 
-  function contarCiUsuario($conexion, $ciUsuario)
+  function validarCiUsuario($conexion, $ciUsuario)
   {
 
-    $consulta ="SELECT COUNT(CIUSUARIO) AS CANTIDAD FROM usuario WHERE IDUSUARIO=$ciUsuario";
+    $consulta ="SELECT COUNT(CIUSUARIO) AS CANTIDAD FROM usuario WHERE CIUSUARIO=$ciUsuario";
     $resultado=mysqli_query($conexion,$consulta);
-    $resultado->fetch_array(MYSQLI_ASSOC);
-    return $resultado;
+    $res = $resultado->fetch_array(MYSQLI_ASSOC);
+
+    $esValido = true;
+
+    if ($res['CANTIDAD'] > 0) {
+      $esValido = false;
+    }
+
+    return $esValido;
   }
 
  ?>

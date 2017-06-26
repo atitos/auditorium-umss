@@ -184,15 +184,20 @@ function runPOST($sqlCon, $post)
             $result['error'] = 'Error en Parametros!';
         }
         else {
-
-          insertarUsuario($sqlCon, $post['parametros'][0], $post['parametros'][1],
+          $ciValido = validarCiUsuario($sqlCon, $post['parametros'][1]);
+          if($ciValido)
+          {
+            insertarUsuario($sqlCon, $post['parametros'][0], $post['parametros'][1],
                                   $post['parametros'][2], $post['parametros'][3],
                                   $post['parametros'][4], md5($post['parametros'][5]));
 
-          $resp = validarUsuario($sqlCon, $post['parametros'][1], md5($post['parametros'][5]));
-          $result = $resp;
-
-          $result['respuesta'] = 'Usuario Registrado';
+            $resp = validarUsuario($sqlCon, $post['parametros'][1], md5($post['parametros'][5]));
+            $result = $resp;
+            $result['respuesta'] = 'Usuario Registrado';
+          }
+          else {
+            $result['error'] = 'El numero de CI ya esta registrado.';
+          }
         }
         break;
 
