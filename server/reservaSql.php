@@ -29,12 +29,15 @@ function actualizarReserva($con,$idreserva,$titulo,$descripcion,$fechainicio,$fe
 function mostrarReservas($conexion,$fechaInicio,$fechaFin)
 {
 	$filas = array();
-  $selecionar="SELECT IDRESERVA, TITULORESERVA, FECHAINICIO, FECHAFIN, HORAINICIO, HORAFIN, IDUSUARIO
-               FROM reserva
-               WHERE (FECHAINICIO BETWEEN '$fechaInicio' AND '$fechaFin')
-               OR (FECHAFIN BETWEEN '$fechaInicio' AND '$fechaFin')
-               OR ('$fechaInicio' BETWEEN FECHAINICIO AND FECHAFIN)
-               OR ('$fechaFin' BETWEEN FECHAINICIO AND FECHAFIN)";
+  $selecionar="SELECT res.IDRESERVA, res.TITULORESERVA, res.FECHAINICIO, res.FECHAFIN, res.HORAINICIO, res.HORAFIN, res.IDUSUARIO,
+                      usr.NOMBREUSUARIO, amb.NOMBREAMBIENTE
+               FROM reserva res, usuario usr, ambiente amb 
+               WHERE res.IDUSUARIO = usr.IDUSUARIO
+               AND res.IDAMBIENTE = amb.IDAMBIENTE
+               AND ((res.FECHAINICIO BETWEEN '$fechaInicio' AND '$fechaFin')
+               OR (res.FECHAFIN BETWEEN '$fechaInicio' AND '$fechaFin')
+               OR ('$fechaInicio' BETWEEN res.FECHAINICIO AND res.FECHAFIN)
+               OR ('$fechaFin' BETWEEN res.FECHAINICIO AND res.FECHAFIN))";
   $resultado=mysqli_query($conexion,$selecionar);
   while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
       $filas[] = $fila;

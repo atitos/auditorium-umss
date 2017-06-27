@@ -39,6 +39,8 @@ function runGET ($sqlCon, $get)
         $fila['start'] = $sqlResult['FECHAINICIO'].'T'.$sqlResult['HORAINICIO'];
         $fila['end'] = $sqlResult['FECHAFIN'].'T'.$sqlResult['HORAFIN'];
         $fila['idUsuario'] = $sqlResult['IDUSUARIO'];
+        $fila['usuario'] = $sqlResult['NOMBREUSUARIO'];
+        $fila['ambiente'] = $sqlResult['NOMBREAMBIENTE'];
 
         $result[] = $fila;
       }

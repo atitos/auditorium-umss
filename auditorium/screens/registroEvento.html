@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="../assets/css/main.css" />
         <link rel="stylesheet" href="../assets/css/fullcalendar.css" />
         <link rel="stylesheet" href="../assets/css/magnific-popup.css" />
+        <link rel="stylesheet" href="../assets/css/jquery.qtip.css" />
         <link rel="stylesheet" href="../assets/css/custom.css" />
         <!-- Scripts -->
         <script src="../assets/js/jquery.min.js"></script>
@@ -18,6 +19,7 @@
         <script src="../assets/js/moment.min.js"></script>
         <script src="../assets/js/fullcalendar.js"></script>
         <script src="../assets/js/magnific-popup.js"></script>
+        <script src="../assets/js/jquery.qtip.js"></script>
         <script src="../javascript/base.js"></script>
         <script>
         $(document).ready(function() {
@@ -63,6 +65,18 @@
                         alert('Ud no puede modificar este evento.');
                     }
 
+                },
+                eventRender: function(evento, elementoDOM) {
+                    elementoDOM.qtip({
+                        content: {
+                            title: {text: evento.title},
+                            text: '<b><font color="black">Usuario: </font></b>' + evento.usuario +
+                                  '<br><b><font color="black">Ambiente: </font></b>' + evento.ambiente
+                        },
+                        hide: {
+                            fixed: true
+                        }
+                    });
                 },
                 eventSources: [
 
@@ -148,7 +162,7 @@
                          $('input#titulo').val(), $('input#descripcion').val(),
                          $('input#fechaInicio').val(), $('input#fechaFin').val(),
                          $('input#horaInicio').val()+':00', $('input#horaFin').val()+':00',
-                         $('input#usuario').val()], sessionStorage.idAmbiente);
+                         $('input#usuario').val(), sessionStorage.idAmbiente]);
                 }
                 else
                 {
