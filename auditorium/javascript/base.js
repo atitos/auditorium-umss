@@ -34,8 +34,15 @@ var enviarConsultaPhp = function(act, args){
                     sessionStorage.apellido2Usuario = obj.usrApellido2;
                     window.location.assign('usuario.html');
                 }
-                /*console.log(obj);
-                alert("Accion Completada!");*/
+
+                if ('respuesta' in obj) {
+                    alert(obj.respuesta);
+                }
+                else {
+                    alert("Accion Completada!");
+                }
+
+                console.log(obj);
             }
             else
             {
@@ -261,6 +268,45 @@ var filtarAmbientePorFechas = function(fechaI, fechaF, horaI, horaF, secuencia, 
                 $('div#divAmbientes').show();
                 console.log(obj);
             }
+        },
+        error: function (req, textoEstado, textoError) {
+            console.log(req);            
+            console.log(textoEstado);
+            console.log(textoError);
+        }
+    })
+}
+
+var registrarSecuenciaEventos = function(idUsuario, idAmbiente, titulo, descripcion, fechas, horaIni, horaFin, solicitante)
+{
+    $.ajax(
+    {
+        type: 'POST',
+        url: SERVER_URL,
+        dataType: 'json',
+        data:
+        {
+            accion: 'registrarMultiplesReservas',
+            idUsuario: idUsuario,
+            idAmbiente: idAmbiente,
+            titulo: titulo,
+            descripcion: descripcion,
+            fechas: fechas,
+            horaInicio: horaIni,
+            horaFin: horaFin,
+            solicitante: solicitante
+        },
+        success: function (obj, textstatus) {
+            if (obj.error) {
+                alert(obj.error);
+            }
+            else {
+                $('#formulario')[0].reset();
+                $.magnificPopup.close();
+                $('div#divAmbientes').hide();
+                alert('La secuencia de reservas se creo con exito!');
+            }
+            console.log(obj);
         },
         error: function (req, textoEstado, textoError) {
             console.log(req);            

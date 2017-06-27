@@ -330,6 +330,17 @@ function runPOST($sqlCon, $post)
         }
         break;
 
+      case 'registrarMultiplesReservas':
+        for ($i = 0; $i < count($post['fechas']); $i++) { 
+          insertarReserva($sqlCon, $post['idUsuario'], $post['idAmbiente'],
+                          $post['titulo'], $post['descripcion'],
+                          $post['fechas'][$i], $post['fechas'][$i],
+                          $post['horaInicio'], $post['horaFin'], $post['solicitante']);
+        }
+
+        $result['respuesta'] = 'Todas las reservas han sido insertadas.';
+        break;
+
       default:
          $result['error'] = 'La accion "'.$post['accion'].'" no existe!';
          break;

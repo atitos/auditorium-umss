@@ -167,15 +167,13 @@
                         }
                     }
                     
-                    for (var i = 0; i < fechas.length; i++) {
-                        enviarConsultaPhp(
-                            "registrarEvento",
-                            [sessionStorage.idUsuario, sessionStorage.idAmbiente,
-                             $('input#titulo').val(), $('input#descripcion').val(),
-                             fechas[i], fechas[i],
-                             horaIni, horaFin,
-                             $('input#usuario').val()]);
-                    }
+                    registrarSecuenciaEventos(
+                        sessionStorage.idUsuario,
+                        sessionStorage.idAmbiente,
+                        $('input#titulo').val(),
+                        $('input#descripcion').val(),
+                        fechas, horaIni, horaFin,
+                        $('input#usuario').val());
                 })
 
                 $('#formManual').submit(function(jsEvent){
@@ -334,7 +332,7 @@
                                             </div>
                                             <br/>
                                             <div>
-                                                <input id="enviar" name="enviar" type="submit" value="Enviar" />
+                                                <input id="buscar" name="buscar" type="submit" value="Buscar" />
                                             </div>
                                             <br/>
                                             <div id="divAmbientes">

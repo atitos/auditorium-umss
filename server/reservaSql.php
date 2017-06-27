@@ -93,7 +93,7 @@ function consultaChoqueHoras($conexion,$fechaInicio, $fechaFin, $horaInicio, $ho
 
 function consultaAmbLibre($conexion, $fechaInicio, $fechaFin, $horaInicio, $horaFin, $soloIds)
 {
-
+  $filas = array();
   $consulta ="SELECT  IDAMBIENTE, NOMBREAMBIENTE
               FROM ambiente
               WHERE IDAMBIENTE NOT IN(SELECT IDAMBIENTE
