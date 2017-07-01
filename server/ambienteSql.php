@@ -64,4 +64,12 @@
     return $filas;
   }
 
+  function obtenerCapacidadAmbiente($conexion,$capacidadAmbiente)
+  {
+      $consulta="SELECT NOMBREAMBIENTE FROM ambiente WHERE CAPACIDAD>=$capacidadAmbiente";
+      $resultado=mysqli_query($conexion,$consulta);
+      $resultado->fetch_array(MYSQLI_ASSOC);
+      return $resultado;
+  }
+
  ?>
