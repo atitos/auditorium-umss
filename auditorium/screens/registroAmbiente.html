@@ -25,7 +25,8 @@
                     enviarConsultaPhp(
                         "registrarAmbiente",
                         [$('select#facultad').val(), $('select#tipoAmbiente').val(),
-                         $('input#nomAmb').val(), $('input#dirAmb').val(),sessionStorage.idUsuario]);
+                         $('input#nomAmb').val(), $('input#dirAmb').val(),
+                         sessionStorage.idUsuario, $('input#capAmb').val()]);
                     
                     $('#formulario')[0].reset();
                     return false;
@@ -104,7 +105,7 @@
                         <br/>
                         <div class="form-group">
                             <label>Capacidad Ambiente</label>
-                            <input id="dirAmb" name="dirAmb" type="text" placeholder="Capacidad del Ambiente" required="" />
+                            <input id="capAmb" name="capAmb" type="text" placeholder="Capacidad del Ambiente" required="" />
                         </div>
 
                         <br/>

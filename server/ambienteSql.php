@@ -1,8 +1,9 @@
 <?php 
 
-   function insertarAmbiente($conexion,$idFacultad,$idTipoAmbiente,$nombreAmbiente,$direccionAmbiente,$idUsuario){
+   function insertarAmbiente($conexion,$idFacultad,$idTipoAmbiente,$nombreAmbiente,$direccionAmbiente,$idUsuario, $capacidadAmbiente){
 
-   $insert = "INSERT INTO ambiente(IDFACULTAD,IDTIPOAMBIENTE,NOMBREAMBIENTE,DIRECCIONAMBIENTE,IDUSUARIO) VALUES($idFacultad,'$idTipoAmbiente','$nombreAmbiente','$direccionAmbiente',$idUsuario)";
+   $insert = "INSERT INTO ambiente(IDFACULTAD,IDTIPOAMBIENTE,NOMBREAMBIENTE,DIRECCIONAMBIENTE,IDUSUARIO,CAPACIDAD)
+                    VALUES ($idFacultad,'$idTipoAmbiente','$nombreAmbiente','$direccionAmbiente',$idUsuario,$capacidadAmbiente)";
    $resultado = mysqli_query($conexion, $insert);
 
    }

@@ -91,12 +91,13 @@ function consultaChoqueHoras($conexion,$fechaInicio, $fechaFin, $horaInicio, $ho
   return $fila;
 }
 
-function consultaAmbLibre($conexion, $fechaInicio, $fechaFin, $horaInicio, $horaFin, $soloIds)
+function consultaAmbLibre($conexion, $fechaInicio, $fechaFin, $horaInicio, $horaFin, $soloIds, $capacidad)
 {
   $filas = array();
   $consulta ="SELECT  IDAMBIENTE, NOMBREAMBIENTE
               FROM ambiente
-              WHERE IDAMBIENTE NOT IN(SELECT IDAMBIENTE
+              WHERE CAPACIDAD >= $capacidad
+                AND IDAMBIENTE NOT IN(SELECT IDAMBIENTE
                                       FROM reserva
                                       WHERE ((FECHAINICIO BETWEEN  '$fechaInicio' AND '$fechaFin'
                                       OR FECHAFIN BETWEEN '$fechaInicio' AND '$fechaFin'

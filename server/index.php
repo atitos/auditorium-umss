@@ -121,7 +121,8 @@ function runGET ($sqlCon, $get)
                                            $fecha,
                                            $get['horaInicio'],
                                            $get['horaFin'],
-                                           true);
+                                           true,
+                                           $get['capacidad']);
             $sqlResults = array_intersect($tmpResult, $sqlResults);
           }
           else {
@@ -130,7 +131,8 @@ function runGET ($sqlCon, $get)
                                            $fecha,
                                            $get['horaInicio'],
                                            $get['horaFin'],
-                                           true);
+                                           true,
+                                           $get['capacidad']);
           }
 
           if (count($sqlResults) == 0) {
@@ -149,7 +151,8 @@ function runGET ($sqlCon, $get)
                                        $get['fechaFin'],
                                        $get['horaInicio'],
                                        $get['horaFin'],
-                                       false);
+                                       false,
+                                       $get['capacidad']);
 
         if (count($sqlResults) == 0) {
           $result['error'] = 'La secuencia tiene conflictos con otras reservas.';
@@ -273,7 +276,8 @@ function runPOST($sqlCon, $post)
         }
         else {
           insertarAmbiente($sqlCon, $post['parametros'][0], $post['parametros'][1],
-                                    $post['parametros'][2], $post['parametros'][3],$post['parametros'][4]);
+                                    $post['parametros'][2], $post['parametros'][3],
+                                    $post['parametros'][4], $post['parametros'][5]);
           $result['respuesta'] = "Ambiene Registrado";
         }
         break;

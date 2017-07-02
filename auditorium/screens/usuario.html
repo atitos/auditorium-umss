@@ -107,6 +107,7 @@
 
                     var fechaIni = $('input#datepicker').val();
                     var fechaFin = $('input#datepicker1').val();
+                    var capacidad = $('input#capacidadF').val();
 
                     if (!($('#todosF')[0].checked))
                     {
@@ -119,7 +120,8 @@
                         $('#horaInicioF').val()+':00',
                         $('#horaFinF').val()+':00',
                         fechas,
-                        'ambienteF');
+                        'ambienteF',
+                        capacidad);
 
                     return false
                 });
@@ -296,7 +298,7 @@
                                                 <label>
                                                     <h4>Capacidad Aula</h4>
                                                 </label>
-                                                <input type="text" id="horaFinF" name="horaFinF" placeholder="Capacidad de Aula" required="">
+                                                <input type="text" id="capacidadF" name="capacidadF" placeholder="Capacidad" required="">
                                             </div>
                                             <br/>
                                             <label>

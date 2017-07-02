@@ -239,7 +239,7 @@ var obtenerSecuenciaFechas = function(fechaInicio, fechaFin, dias)
     return secuenciaFechas;
 }
 
-var filtarAmbientePorFechas = function(fechaI, fechaF, horaI, horaF, secuencia, selectId)
+var filtarAmbientePorFechas = function(fechaI, fechaF, horaI, horaF, secuencia, selectId, capacidad)
 {
     $.ajax(
     {
@@ -253,7 +253,8 @@ var filtarAmbientePorFechas = function(fechaI, fechaF, horaI, horaF, secuencia, 
             fechaFin:fechaF,
             horaInicio:horaI,
             horaFin: horaF,
-            fechas:secuencia
+            fechas:secuencia,
+            capacidad: capacidad
         },
        
         success: function (obj, textstatus) {
@@ -277,7 +278,7 @@ var filtarAmbientePorFechas = function(fechaI, fechaF, horaI, horaF, secuencia, 
     })
 }
 
-var registrarSecuenciaEventos = function(idUsuario, idAmbiente, titulo, descripcion, fechas, horaIni, horaFin, solicitante)
+var registrarSecuenciaEventos = function(idUsuario, idAmbiente, titulo, descripcion, fechas, horaIni, horaFin, solicitante, capacidad)
 {
     $.ajax(
     {
@@ -294,7 +295,8 @@ var registrarSecuenciaEventos = function(idUsuario, idAmbiente, titulo, descripc
             fechas: fechas,
             horaInicio: horaIni,
             horaFin: horaFin,
-            solicitante: solicitante
+            solicitante: solicitante,
+            capacidad: capacidad
         },
         success: function (obj, textstatus) {
             if (obj.error) {
