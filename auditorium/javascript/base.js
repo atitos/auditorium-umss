@@ -306,7 +306,9 @@ var registrarSecuenciaEventos = function(idUsuario, idAmbiente, titulo, descripc
                 $('#formulario')[0].reset();
                 $.magnificPopup.close();
                 $('div#divAmbientes').hide();
+                window.location.assign('registroEvento.html');
                 alert('La secuencia de reservas se creo con exito!');
+
             }
             console.log(obj);
         },
