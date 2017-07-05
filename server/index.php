@@ -136,7 +136,7 @@ function runGET ($sqlCon, $get)
           }
 
           if (count($sqlResults) == 0) {
-            $result['error'] = 'La secuencia tiene conflictos con otras reservas.';
+            $result['error'] = 'La secuencia tiene conflictos con otras reservas o no hay un ambiente con la capacidad deseada.';
             break;
           }
         }

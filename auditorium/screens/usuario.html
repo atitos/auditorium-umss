@@ -127,16 +127,21 @@
                 });
 
                 $('#crearF').click(function(){
-
-                    $('#formulario')[0].reset();
+            
                     sessionStorage.idAmbiente = $('select#ambienteF').val();
-                    $('input#usuario').val(sessionStorage.nombreUsuario);
+                    if(sessionStorage.idAmbiente != 0){
+                        $('#formulario')[0].reset();
+                        $('input#usuario').val(sessionStorage.nombreUsuario);
 
-                    $.magnificPopup.open({
-                        items:{src:'#formulario'},
-                        type: "inline",
-                        modal: true
-                    });
+                        $.magnificPopup.open({
+                            items:{src:'#formulario'},
+                            type: "inline",
+                            modal: true
+                        });
+                    }
+                    else {
+                        alert('Seleccione un ambiente!');
+                    }
                 });
 
                 $('#formulario').submit(function(jsEvent){
@@ -181,8 +186,13 @@
                 $('#formManual').submit(function(jsEvent){
                     jsEvent.preventDefault();
                     sessionStorage.idAmbiente = $('#ambienteM').val();
-                    sessionStorage.fechaElegida =  $('#datepicker4').val();
-                    window.location.assign('registroEvento.html');
+                    if(sessionStorage.idAmbiente != 0){
+                        sessionStorage.fechaElegida =  $('#datepicker4').val();
+                        window.location.assign('registroEvento.html');
+                    }
+                    else{
+                        alert('Seleccione ambiente!');
+                    }
                     return false;
                 });
             });
@@ -452,7 +462,7 @@
                                                     </select>    
                                                 </div>
                                                 <br/>
-                                                <div><label><h4>fecha</h4></label><input type="text" id="datepicker4" /></div>
+                                                <div><label><h4>fecha</h4></label><input type="text" id="datepicker4" required=""/></div>
                                                 <br/>
                                                 <input id="enviar3" name="enviar3" type="submit" value="Enviar" /> 
                                             </div>
